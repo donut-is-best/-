@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 毛宝守护者</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #ff9a9e;
+            --primary-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            --hover-gradient: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            --text-dark: #333;
+            --text-light: #888;
+        }
+
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 主容器：卡片式设计 */
+        .main-wrapper {
+            background: white;
+            width: 900px;
+            max-width: 90%;
+            height: 550px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            animation: fadeIn 0.8s ease;
+        }
+
+        /* 左侧：图片区域 */
+        .left-side {
+            flex: 1;
+            background: url('https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            color: white;
+        }
+
+        /* 图片遮罩，让文字更清晰 */
+        .left-side::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+        }
+
+        .left-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .left-content h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .left-content p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* 右侧：表单区域 */
+        .right-side {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+
+        .login-header
+        {
+            text-align: center;
+        <img src="F:\桌面文件\智创赛\毛宝守护者：智能宠物看护系统网页\img\pet_logo.jpg">;
+        }
+
+
+        .login-header h2 {
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* 表单控件美化 */
+        .form-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: none; /* 隐藏传统标签，使用placeholder和图标 */
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #bbb;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .form-control {
+            height: 50px;
+            padding-left: 45px; /* 为图标留出空间 */
+            border-radius: 30px; /* 圆角输入框 */
+            border: 1px solid #eee;
+            background-color: #f9f9f9;
+            box-shadow: none;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            background-color: #fff;
+            border-color: #ff9a9e;
+            box-shadow: 0 0 0 3px rgba(255, 154, 158, 0.1);
+        }
+
+        .form-control:focus + .input-icon {
+            color: #ff9a9e;
+        }
+
+        /* 按钮美化 */
+        .btn-custom {
+            background-image: var(--primary-gradient);
+            border: none;
+            height: 50px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: white;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 154, 158, 0.4);
+        }
+
+        .btn-custom:hover {
+            background-image: var(--hover-gradient);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.5);
+            color: white;
+        }
+
+        .btn-custom:active {
+            transform: translateY(0);
+        }
+
+        /* 链接美化 */
+        .register-link {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .register-link a {
+            color: #ff758c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* 简单的淡入动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .main-wrapper {
+                flex-direction: column;
+                height: auto;
+                width: 90%;
+                margin: 20px;
+            }
+            .left-side {
+                height: 150px;
+                padding: 20px;
+            }
+            .left-content h3 { font-size: 20px; }
+            .right-side { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <div class="left-side">
+        <div class="left-content">
+            <h3>守护每一份陪伴</h3>
+            <p>欢迎回到毛宝守护者，请登录以继续~</p>
+        </div>
+    </div>
+
+    <div class="right-side">
+        <div class="login-header">
+            <img src="img/pet_logo.jpg" style="width: 80px; height: 80px; border-radius:50%; margin-bottom:15px;">
+            <h2>用户登录</h2>
+            <p>注册毛宝看护系统~</p>
+        </div>
+
+        <form role="form">
+            <div class="form-group">
+                <i class="fa fa-envelope input-icon"></i>
+                <input id="emailAddress" type="email" class="form-control" placeholder="请输入邮箱地址" required>
+            </div>
+            <div class="form-group">
+                <i class="fa fa-lock input-icon"></i>
+                <input id="password" type="password" class="form-control" placeholder="请输入密码" required>
+            </div>
+
+            <button id="btn-login" type="button" class="btn btn-custom">立即登录</button>
+
+            <div class="register-link">
+                还没有账号？ <a href="register.html">立即注册</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入 Firebase 工具
+    import { auth, signInWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“登录”按钮的点击
+    document.getElementById('btn-login').addEventListener('click', async () => {
+        
+        const email = document.getElementById('emailAddress').value;
+        const password = document.getElementById('password').value;
+        const btn = document.getElementById('btn-login');
+        const originalText = btn.innerText;
+
+        // --- 简单验证 ---
+        if (!email || !password) {
+            alert('请填写完整的邮箱和密码！( •̀ ω •́ )y');
+            return;
+        }
+
+        // --- 开始登录流程 ---
+        btn.innerText = "登录中...";
+        btn.disabled = true;
+
+        try {
+            // 3. 呼叫 Firebase 验证账号密码
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 4. 登录成功
+            console.log("登录成功:", user.email);
+
+            // 记录登录状态（虽然Firebase会自动记，但为了你原本代码的逻辑，我们这里也存一下）
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', user.email);
+
+            alert("欢迎回来，" + user.email + "！");
+            window.location.href = 'index.html'; // 跳转到主页
+
+        } catch (error) {
+            // 5. 登录失败
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error("登录出错:", errorCode);
+
+            if (errorCode === 'auth/invalid-credential' || errorCode === 'auth/user-not-found' || errorCode === 'auth/wrong-password') {
+                alert("登录失败：账号或密码错误。");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("登录失败：邮箱格式不对。");
+            } else {
+                alert("登录失败，请稍后再试。");
+            }
+
+            // 恢复按钮
+            btn.innerText = originalText;
+            btn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>

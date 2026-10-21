@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毛宝守护者 - 图片检测</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            --hover-gradient: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            --accent-color: #ff758c;
+            --text-dark: #333;
+            --bg-light: #f8f9fa;
+        }
+
+        body {
+            padding-top: 80px;
+            background-color: var(--bg-light);
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+        }
+
+        /* 导航栏样式 */
+        .navbar-custom {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 70px;
+            border: none;
+        }
+        .navbar-custom .navbar-brand { color: var(--accent-color) !important; font-weight: 700; font-size: 24px; padding: 25px 15px; }
+        .navbar-custom .nav > li > a { color: #555 !important; font-weight: 500; padding: 25px 20px; }
+        .navbar-custom .nav > li.active > a { color: var(--accent-color) !important; background: transparent; }
+
+        /* 页面标题 */
+        .page-header-banner {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-header-banner h2 { color: var(--text-dark); font-weight: 700; }
+        .page-header-banner p { color: #888; }
+
+        /* 卡片容器 */
+        .detect-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            height: 100%;
+        }
+
+        .detect-card h3 {
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-size: 20px;
+            color: var(--text-dark);
+            border-left: 4px solid var(--accent-color);
+            padding-left: 15px;
+        }
+
+        /* 输入控件 */
+        .input-group-custom {
+            margin-bottom: 20px;
+        }
+        .input-group-custom label { display: block; margin-bottom: 8px; font-weight: 600; color: #666; }
+        .form-control-custom {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+
+        /* 按钮 */
+        .btn-custom {
+            background-image: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            width: 100%;
+            transition: 0.3s;
+            margin-top: 10px;
+            outline: none;
+        }
+        .btn-custom:hover {
+            background-image: var(--hover-gradient);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 117, 140, 0.4);
+            color: white;
+        }
+
+        /* 结果展示区 */
+        #imagePreviewContainer {
+            min-height: 300px;
+            background: #f0f2f5;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            padding: 10px;
+        }
+
+        #resultCanvas {
+            max-width: 100%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+
+        .ai-analysis-box {
+            background: #fff0f1;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #ffe5e5;
+        }
+        .ai-analysis-box h4 { color: var(--accent-color); margin-top: 0; font-size: 16px; font-weight: 700; }
+
+        #result {
+            font-family: Consolas, Monaco, monospace;
+            font-size: 11px;
+            color: #666;
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 15px;
+            border: 1px solid #eee;
+            display: none;
+        }
+
+        .toggle-data-btn {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-custom navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar" style="background: #888;"></span>
+                <span class="icon-bar" style="background: #888;"></span>
+                <span class="icon-bar" style="background: #888;"></span>
+            </button>
+            <a class="navbar-brand" href="index.html"><i class="fa fa-paw"></i> 毛宝守护者</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="index.html">首页</a></li>
+                <li class="active"><a href="image-detect.html">图片检测</a></li>
+                <li><a href="video-detect.html">视频检测</a></li>
+                <li><a href="about.html">系统介绍</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-header-banner">
+        <h2>宠物图片行为识别检测</h2>
+        <p>上传宠物照片，毛宝系统将自动识别站立、进食、休息等状态~</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="detect-card">
+                <h3><i class="fa fa-upload"></i> 上传图片</h3>
+
+                <div class="input-group-custom">
+                    <label>本地上传</label>
+                    <input type="file" id="imageUpload" accept="image/*" class="form-control-custom">
+                    <button class="btn btn-custom" onclick="uploadFilePredict()">
+                        <i class="fa fa-magic"></i> 开始分析
+                    </button>
+                </div>
+
+                <div style="text-align: center; margin: 20px 0; color: #ccc;">- OR -</div>
+
+                <div class="input-group-custom">
+                    <label>网络图片 URL</label>
+                    <input type="text" id="imageUrlInput" placeholder="https://..." class="form-control-custom">
+                    <button class="btn btn-custom" onclick="predictByUrl()" style="background-image: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);">
+                        <i class="fa fa-link"></i> URL 分析
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="detect-card">
+                <h3><i class="fa fa-eye"></i> 检测结果</h3>
+
+                <div id="imagePreviewContainer">
+                    <span style="color: #999;" id="placeholderText">请在左侧上传图片以开始检测</span>
+                    <canvas id="resultCanvas" style="display: none;"></canvas>
+                </div>
+
+                <div class="ai-analysis-box" id="aiAnalysis">
+                    <h4><i class="fa fa-commenting-o"></i> 毛宝行为分析报告</h4>
+                    <div id="analysisContent">
+                        等待检测数据...
+                    </div>
+                </div>
+
+                <button class="toggle-data-btn" onclick="$('#result').slideToggle()">显示/隐藏原始 API 数据</button>
+                <div id="result"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script>
+    // 1. 本地图片上传检测
+    async function uploadFilePredict() {
+        const fileInput = document.getElementById('imageUpload');
+        const file = fileInput.files[0];
+        if (!file) {
+            alert('请先选择毛宝图片文件！(＞﹏＜)');
+            return;
+        }
+
+        // UI 反馈
+        showLoadingState();
+
+        const formData = new FormData();
+        formData.append('file', file);
+        const imageUrl = URL.createObjectURL(file);
+
+        // 调用通用请求函数
+        await sendPredictionRequest('https://detect.roboflow.com/kk-tr6lg/1?api_key=hghCpA15OYieZgE8Uzg1', formData, imageUrl);
+    }
+
+    // 2. URL 图片检测
+    async function predictByUrl() {
+        const urlInput = document.getElementById('imageUrlInput').value.trim();
+        if (!urlInput) {
+            alert('请先输入毛宝图片URL！');
+            return;
+        }
+
+        // UI 反馈
+        showLoadingState();
+
+        const encodedUrl = encodeURIComponent(urlInput);
+        const apiUrl = `https://serverless.roboflow.com/kk-tr6lg/1?api_key=hghCpA15OYieZgE8Uzg1&image=${encodedUrl}`;
+
+        // 调用通用请求函数 (Body 为 null 因为是 GET 请求)
+        await sendPredictionRequest(apiUrl, null, urlInput);
+    }
+
+    // 3. 核心请求与处理函数
+    async function sendPredictionRequest(endpoint, bodyData, imageSource) {
+        try {
+            let response;
+            if (bodyData) {
+                // 如果有 FormData，说明是文件上传，使用 POST
+                response = await fetch(endpoint, {
+                    method: "POST",
+                    body: bodyData
+                });
+            } else {
+
+                response = await fetch(endpoint, {
+                    method: "POST" // Roboflow serverless 也可以用 POST，或者根据文档如果是GET
+
+                });
+            }
+
+            if (!response.ok) {
+                throw new Error("API 请求失败: " + response.statusText);
+            }
+
+            const data = await response.json();
+
+            // 显示结果
+            displayResults(imageSource, data.predictions);
+
+            // 填充原始数据
+            document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+
+        } catch (error) {
+            console.error(error);
+            document.getElementById('analysisContent').innerHTML = `<span style="color:red;">检测出错：${error.message}</span>`;
+            document.getElementById('placeholderText').style.display = 'block';
+            document.getElementById('placeholderText').innerText = "检测失败，请重试";
+            document.getElementById('resultCanvas').style.display = 'none';
+        }
+    }
+
+    // 4. 绘制 Canvas 和边框
+    function displayResults(imageSource, predictions) {
+        const canvas = document.getElementById('resultCanvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+
+        img.onload = function() {
+            // 设置 Canvas 尺寸与图片一致
+            canvas.width = img.width;
+            canvas.height = img.height;
+
+            // 绘制底图
+            ctx.drawImage(img, 0, 0);
+
+            // 绘制预测框
+            predictions.forEach(prediction => {
+                const x = prediction.x - prediction.width / 2;
+                const y = prediction.y - prediction.height / 2;
+                const width = prediction.width;
+                const height = prediction.height;
+
+                // 画框
+                ctx.strokeStyle = '#00FF00'; // 绿色边框
+                ctx.lineWidth = 4;
+                ctx.strokeRect(x, y, width, height);
+
+                // 画标签背景
+                ctx.fillStyle = '#00FF00';
+                const text = `${prediction.class} (${(prediction.confidence * 100).toFixed(1)}%)`;
+                const textWidth = ctx.measureText(text).width;
+                ctx.fillRect(x, y - 25, textWidth + 10, 25);
+
+                // 画文字
+                ctx.fillStyle = '#000000';
+                ctx.font = '16px Arial';
+                ctx.fillText(text, x + 5, y - 7);
+            });
+
+            // 隐藏占位符，显示 Canvas
+            document.getElementById('placeholderText').style.display = 'none';
+            canvas.style.display = 'block';
+
+            // 生成分析报告
+            generateAnalysisReport(predictions);
+        };
+
+        // 设置图片源（触发 onload）
+        img.src = imageSource;
+        // 如果是跨域图片，需要设置这个，否则 Canvas 可能会被污染
+        img.crossOrigin = "Anonymous";
+    }
+
+    // 5. 生成简单的分析报告
+    function generateAnalysisReport(predictions) {
+        const contentDiv = document.getElementById('analysisContent');
+
+        if (predictions.length === 0) {
+            contentDiv.innerHTML = "未在图片中检测到明显的宠物或特定行为。请尝试上传更清晰的图片。";
+            return;
+        }
+
+        let html = "<ul style='padding-left: 20px;'>";
+
+        const behaviorMap = {
+            'standing': '宠物正在<strong>站立</strong>，看起来很有精神。',
+            'resting': '宠物正在<strong>休息/睡觉</strong>，请勿打扰它的美梦哦。',
+            'eating': '宠物正在<strong>进食</strong>，食欲不错！',
+            'fighting': '<strong style="color:red;">警报：检测到打斗行为！</strong>请注意宠物安全。',
+            'playing': '宠物正在<strong>玩耍</strong>，心情看起来很不错。'
+        };
+
+        predictions.forEach(p => {
+            let desc = behaviorMap[p.class] || `检测到行为：<strong>${p.class}</strong>`;
+            html += `<li>${desc} (置信度: ${(p.confidence * 100).toFixed(1)}%)</li>`;
+        });
+        html += "</ul>";
+
+        contentDiv.innerHTML = html;
+    }
+
+    // 辅助：加载状态 UI
+    function showLoadingState() {
+        document.getElementById('analysisContent').innerHTML = '<i class="fa fa-spinner fa-spin"></i> 正在进行宠物行为状态分析...';
+        document.getElementById('resultCanvas').style.display = 'none';
+        document.getElementById('placeholderText').style.display = 'block';
+        document.getElementById('placeholderText').innerText = "加载图片中...";
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>系统介绍 - 毛宝守护者</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #ff9a9e;
+            --accent-color: #ff758c;
+            --text-dark: #333;
+            --bg-light: #f8f9fa;
+        }
+
+        body {
+            padding-top: 70px;
+            background-color: var(--bg-light);
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            color: #555;
+        }
+
+        /* 复用首页的导航栏样式 */
+        .navbar-custom {
+            background-color: #fff;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+        }
+        .navbar-custom .navbar-brand { color: var(--accent-color) !important; font-weight: 700; font-size: 24px; }
+        .navbar-custom .nav > li > a { color: #555 !important; font-weight: 500; }
+        .navbar-custom .nav > li.active > a { color: var(--accent-color) !important; background: transparent; }
+
+        .btn-nav {
+            border: 1px solid var(--accent-color);
+            border-radius: 20px;
+            color: var(--accent-color) !important;
+            padding: 6px 20px !important;
+            margin-top: 8px;
+            transition: all 0.3s;
+        }
+        .btn-nav:hover { background: var(--accent-color); color: white !important; }
+
+        /* 页面头部横幅 */
+        .page-header-banner {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+            padding: 60px 0;
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+        }
+        .page-header-banner h1 { margin: 0; font-weight: 700; text-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .page-header-banner p { margin-top: 10px; font-size: 18px; opacity: 0.9; }
+
+        .container-content {
+            max-width: 900px;
+            margin: 0 auto 60px auto;
+        }
+
+        /* 内容卡片 */
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            padding: 50px;
+            margin-bottom: 30px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .content-section h2 {
+            color: var(--text-dark);
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 700;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        /* 标题左侧的小竖条装饰 */
+        .content-section h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            bottom: 5px;
+            width: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .content-section p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        /* 列表样式 */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            margin-bottom: 18px;
+            padding-left: 35px;
+            position: relative;
+            line-height: 1.6;
+        }
+        .feature-list li:before {
+            content: "\f00c"; /* FontAwesome check icon */
+            font-family: "FontAwesome";
+            color: #fff;
+            background: var(--accent-color);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 12px;
+            text-align: center;
+            line-height: 20px;
+            position: absolute;
+            left: 0;
+            top: 3px;
+        }
+
+        /* 技术栈标签 */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        .tech-item {
+            background-color: #fff0f1;
+            color: var(--accent-color);
+            padding: 8px 18px;
+            border-radius: 50px; /* 胶囊形状 */
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid #ffe0e3;
+            transition: 0.3s;
+        }
+        .tech-item:hover {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: white;
+            padding: 30px 0;
+            border-top: 1px solid #eee;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-custom navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar" style="background-color: #888;"></span>
+                <span class="icon-bar" style="background-color: #888;"></span>
+                <span class="icon-bar" style="background-color: #888;"></span>
+            </button>
+            <a class="navbar-brand" href="index.html"><i class="fa fa-paw"></i> 毛宝守护者</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="image-detect.html" class="detect-link" data-target="image-detect.html">图片检测</a></li>
+                <li><a href="video-detect.html" class="detect-link" data-target="video-detect.html">视频检测</a></li>
+                <li class="active"><a href="about.html">系统介绍</a></li>
+                <li><a href="login.html" id="authButton" class="btn-nav">登录</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="page-header-banner">
+    <div class="container">
+        <h1>系统介绍</h1>
+        <p>让我们一起守护爱宠健康！</p>
+    </div>
+</div>
+
+<div class="container container-content">
+
+    <div class="content-section">
+        <h2>关于毛宝守护者</h2>
+        <p><strong>毛宝守护者</strong> 是一款基于先进的 <strong>YOLOv11 深度学习算法</strong> 构建的智能宠物看护系统。我们的初衷很简单：在您忙碌的时候，充当您的"第三只眼"，为您提供全方位的宠物行为监测。</p>
+        <p>系统结合了计算机视觉与物联网技术，能够自动识别宠物的站立、进食、睡眠等多种状态。无论是日常的健康状况评估，还是突发的异常行为预警，我们都能为您提供专业的数据支持，让养宠生活更加轻松、科学。</p>
+    </div>
+
+    <div class="content-section">
+        <h2>核心功能亮点</h2>
+        <ul class="feature-list">
+            <li><strong>精准图片检测</strong>：上传宠物图片或输入URL，快速识别站立、进食、休息等5种关键行为，生成详细分析报告。</li>
+            <li><strong>实时视频流分析</strong>：秒级记录视频中的行为时长，智能过滤无效画面，捕捉精彩瞬间。</li>
+            <li><strong>智能异常预警</strong>：自定义阈值（如：长时间未动、进食频率过低），一旦触发立即推送警报，守护安全。</li>
+            <li><strong>健康数据看板</strong>：基于AI大数据，解读行为背后的健康信号，提供个性化养护建议，记录成长轨迹。</li>
+            <li><strong>多端无缝体验</strong>：完美适配 PC、平板及手机端，随时随地查看毛孩子状态。</li>
+        </ul>
+    </div>
+
+    <div class="content-section">
+        <h2>技术架构优势</h2>
+        <p>我们采用了业界领先的技术栈，确保系统的实时性与准确性：</p>
+        <div class="tech-stack">
+            <div class="tech-item"><i class="fa fa-code"></i> YOLOv11 目标检测</div>
+            <div class="tech-item"><i class="fa fa-cubes"></i> 深度神经网络</div>
+            <div class="tech-item"><i class="fa fa-video-camera"></i> 实时流媒体处理</div>
+            <div class="tech-item"><i class="fa fa-mobile"></i> 响应式 Web 设计</div>
+            <div class="tech-item"><i class="fa fa-cloud"></i> 云端数据计算</div>
+            <div class="tech-item"><i class="fa fa-shield"></i> 智能预警算法</div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <h2>快速上手指南</h2>
+        <p>只需简单三步，开启智能养宠新生活：</p>
+        <div class="row" style="margin-top: 30px;">
+            <div class="col-sm-4 text-center">
+                <i class="fa fa-user-plus" style="font-size: 40px; color: #ff9a9e; margin-bottom: 15px;"></i>
+                <h4>1. 注册账号</h4>
+                <p style="font-size: 14px; color: #888;">建立您和宠物的专属档案</p>
+            </div>
+            <div class="col-sm-4 text-center">
+                <i class="fa fa-mouse-pointer" style="font-size: 40px; color: #ff9a9e; margin-bottom: 15px;"></i>
+                <h4>2. 选择功能</h4>
+                <p style="font-size: 14px; color: #888;">图片分析或视频监控</p>
+            </div>
+            <div class="col-sm-4 text-center">
+                <i class="fa fa-check-circle" style="font-size: 40px; color: #ff9a9e; margin-bottom: 15px;"></i>
+                <h4>3. 获取报告</h4>
+                <p style="font-size: 14px; color: #888;">查看AI生成的行为分析</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container text-center">
+        <p>© 2025 毛宝守护者 - Based on YOLOv11</p>
+    </div>
+</footer>
+
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+    $(document).ready(function() {
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const authButton = $('#authButton');
+        const detectLinks = $('.detect-link');
+
+        if (isLoggedIn) {
+            detectLinks.each(function() {
+                const targetPage = $(this).data('target');
+                $(this).attr('href', targetPage);
+            });
+
+            authButton.text('注销');
+            authButton.attr('href', '#');
+
+            authButton.click(function(e) {
+                e.preventDefault();
+                if(confirm('确定要注销登录吗？')){
+                    localStorage.removeItem('isLoggedIn');
+                    window.location.href = 'login.html';
+                }
+            });
+        } else {
+            detectLinks.attr('href', 'login.html');
+            authButton.text('登录');
+            authButton.attr('href', 'login.html');
+        }
+    });
+</script>
+</body>
+</html>

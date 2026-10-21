@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毛宝守护者 - 视频检测</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+
+        body {
+            padding-top: 90px;
+            background-color: #F8F8F8;
+            font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-bottom: 60px;
+        }
+
+
+        .navbar-inverse {
+            background-color: #FFFFFF;
+            border-color: #E0E0E0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            height: 70px;
+        }
+        .navbar-inverse .navbar-brand {
+            color: #6C8EBF;
+            font-size: 24px;
+            font-weight: 700;
+            padding: 20px 15px;
+        }
+        .navbar-inverse .navbar-brand .fa-paw {
+            color: #FFB74D;
+            margin-right: 8px;
+        }
+        .navbar-inverse .navbar-nav > li > a {
+            color: #666666;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 25px 15px;
+            transition: color 0.3s, background-color 0.3s;
+        }
+        .navbar-inverse .navbar-nav > li > a:hover {
+            color: #87CEEB;
+            background-color: #F0F8FF;
+        }
+        .navbar-inverse .navbar-nav > .active > a,
+        .navbar-inverse .navbar-nav > .active > a:hover,
+        .navbar-inverse .navbar-nav > .active > a:focus {
+            background-color: #E0F2F7;
+            color: #87CEEB;
+            border-bottom: 3px solid #87CEEB;
+            padding-bottom: 22px;
+        }
+        .navbar-inverse .navbar-nav > li > a .fa {
+            margin-right: 5px;
+        }
+        /* 响应式导航栏按钮 */
+        .navbar-toggle {
+            margin-top: 18px;
+            border-color: #ccc;
+        }
+        .navbar-toggle .icon-bar {
+            background-color: #888;
+        }
+
+
+        /* 页面标题 */
+        .page-title {
+            text-align: center;
+            margin-bottom: 50px;
+            margin-top: 20px; /* 增加顶部边距，确保不被导航栏遮挡 */
+        }
+        .page-title h1 {
+            color: #6C8EBF; /* 强调色 */
+            font-size: 40px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        .page-title h1 .fa {
+            margin-right: 15px; /* 图标与标题间距 */
+            color: #FFB74D; /* 图标颜色 */
+        }
+        .subtitle {
+            color: #777777;
+            font-size: 18px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* 卡片美化 - 柔和阴影，圆角 */
+        .card {
+            background: #FFFFFF;
+            border-radius: 15px; /* 更大的圆角 */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08); /* 更明显的柔和阴影 */
+            padding: 35px;
+            margin-bottom: 30px;
+            border: none; /* 移除边框 */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px); /* 悬停微动效果 */
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+        .card h3 {
+            color: #6C8EBF; /* 主色调 */
+            font-weight: 700;
+            font-size: 26px;
+            border-left: 5px solid #87CEEB; /* 强调线 */
+            padding-left: 18px;
+            margin-bottom: 25px;
+            margin-top: 0;
+        }
+        .card hr {
+            border-top: 1px solid #EEEEEE;
+            margin-top: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* 按钮美化 - 圆角，柔和过渡 */
+        .btn {
+            border-radius: 8px; /* 圆角按钮 */
+            padding: 10px 22px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: none; /* 移除默认边框 */
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .btn-primary {
+            background-color: #87CEEB; /* 天蓝色 */
+        }
+        .btn-primary:hover {
+            background-color: #6CBEDD;
+        }
+        .btn-success {
+            background-color: #98FB98; /* 薄荷绿 */
+            color: #333; /* 绿色按钮文字使用深色 */
+        }
+        .btn-success:hover {
+            background-color: #7EDD7E;
+        }
+        .btn-warning {
+            background-color: #FFB74D; /* 暖橙色 */
+            color: #333;
+        }
+        .btn-warning:hover {
+            background-color: #FF9800;
+        }
+        .btn-default {
+            background-color: #E0E0E0;
+            color: #555;
+        }
+        .btn-default:hover {
+            background-color: #CCCCCC;
+        }
+        .btn .fa {
+            margin-right: 8px;
+        }
+
+        /* 表单控件 */
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #E0E0E0;
+            padding: 10px 15px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-control:focus {
+            border-color: #87CEEB;
+            box-shadow: 0 0 0 0.2rem rgba(135, 206, 235, 0.25); /* 柔和焦点阴影 */
+            outline: none;
+        }
+        label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        /* 状态栏 */
+        .status-bar {
+            background-color: #E0F2F7; /* 浅蓝色背景 */
+            border-left: 5px solid #87CEEB; /* 强调蓝色 */
+            color: #4A6E8F;
+            font-weight: 600;
+            margin-top: 30px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+        .status-bar .fa {
+            margin-right: 10px;
+            color: #87CEEB;
+        }
+
+        /* 视频/Canvas 容器 */
+        .video-container {
+            min-height: 450px; /* 增加高度 */
+            height: 450px;
+            border: 2px dashed #B0D9E7; /* 柔和虚线边框 */
+            background-color: #F0F8FF; /* 浅蓝色背景 */
+            border-radius: 12px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.08); /* 内阴影 */
+            margin-bottom: 30px;
+            display: flex; /* 确保内容居中 */
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .video-container video, .video-container canvas {
+            width: auto !important;
+            max-width: 100%;
+            max-height: 100%; /* 填满容器高度 */
+            border-radius: 10px; /* 圆角视频/canvas */
+            object-fit: contain; /* 确保视频内容完整显示 */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .video-placeholder {
+            color: #A0BBD0; /* 柔和提示色 */
+            font-size: 20px;
+            text-align: center;
+            padding: 30px;
+        }
+        .video-placeholder p {
+            margin-bottom: 10px;
+        }
+        .video-placeholder .fa {
+            font-size: 48px;
+            color: #A0BBD0;
+            margin-bottom: 20px;
+        }
+
+        /* 标签页美化 */
+        .nav-tabs {
+            border-bottom: 2px solid #E0E0E0;
+            margin-bottom: 25px;
+        }
+        .nav-tabs li a {
+            font-weight: 600;
+            color: #777777;
+            padding: 15px 25px;
+            border-radius: 8px 8px 0 0; /* 圆角标签页 */
+            transition: all 0.3s;
+        }
+        .nav-tabs li a:hover {
+            background-color: #F8F8F8;
+            color: #6C8EBF;
+        }
+        .nav-tabs li.active a, .nav-tabs li.active a:focus, .nav-tabs li.active a:hover {
+            color: #6C8EBF;
+            background-color: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-bottom-color: #FFFFFF; /* 隐藏底部边框，与内容区域无缝衔接 */
+            transform: translateY(2px); /* 活跃标签页微抬升 */
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+        }
+        .nav-tabs li a .fa {
+            margin-right: 8px;
+            color: #FFB74D; /* 图标颜色 */
+        }
+        .nav-tabs li.active a .fa {
+            color: #6C8EBF; /* 活跃时图标颜色与文字匹配 */
+        }
+
+        /* 分析结果区 */
+        .tab-content {
+            background-color: #FFFFFF;
+            border: 1px solid #E0E0E0;
+            border-top: none; /* 与标签页无缝衔接 */
+            border-radius: 0 0 12px 12px; /* 底部圆角 */
+            padding: 25px;
+            min-height: 200px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .analysis-item {
+            border-bottom: 1px dashed #E0E0E0;
+            padding: 18px 0;
+            margin-bottom: 18px;
+            line-height: 1.7;
+            font-size: 15px;
+            color: #555;
+        }
+        .analysis-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .analysis-item strong {
+            color: #444;
+            font-weight: 700;
+        }
+        .alert-highlight {
+            border: 2px solid #E74C3C; /* 警告色 */
+            background-color: #FFF0F0;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(231, 76, 60, 0.2);
+            color: #C0392B;
+            font-weight: 600;
+        }
+        .alert-highlight p {
+            margin-bottom: 8px;
+        }
+        .alert-highlight p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 计时器美化 */
+        .timer-display {
+            display: grid; /* 使用 Grid 布局 */
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px; /* 间距 */
+            margin-top: 20px;
+        }
+        .timer-card {
+            background-color: #F0F8FF; /* 浅蓝色背景 */
+            border: 1px solid #D0E8F8;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+            padding: 20px 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        .timer-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .timer-card h5 {
+            margin: 0 0 10px 0;
+            color: #6C8EBF; /* 强调色 */
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .timer-card p {
+            margin: 0;
+            font-size: 32px; /* 更大字号 */
+            font-weight: 700;
+            color: #87CEEB; /* 计时器数字颜色 */
+            letter-spacing: 1px;
+        }
+
+        /* 设置项分组 */
+        .settings-group {
+            border-top: 1px dashed #E0E0E0;
+            margin-top: 40px;
+            padding-top: 30px;
+        }
+        .settings-group h4 {
+            color: #6C8EBF;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .settings-group p {
+            color: #777;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+        .setting-item {
+            margin-bottom: 20px;
+        }
+        .setting-item label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+            font-size: 15px;
+        }
+        .setting-item input[type="number"] {
+            width: 90px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .setting-item span {
+            color: #777;
+            font-size: 15px;
+        }
+
+        /* 原始数据预格式化文本 */
+        #result pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background: #F8F8F8;
+            border: 1px solid #E0E0E0;
+            padding: 15px;
+            border-radius: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 14px;
+            color: #444;
+        }
+
+        /* 页脚 */
+        footer {
+            background-color: #6C8EBF; /* 与品牌色一致 */
+            color: #E0F2F7; /* 浅色文字 */
+            padding: 30px 0;
+            margin-top: 80px;
+            font-size: 15px;
+            box-shadow: inset 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* 新增/修改：文件上传容器美化 */
+        .upload-group {
+            border: 2px dashed #D0E8F8;
+            background-color: #F8FCFF;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .upload-group .form-control {
+            margin-bottom: 15px;
+        }
+        /* 调整上传按钮样式，使其更突出 */
+        .btn-upload-primary {
+            background-color: #87CEEB; /* 天蓝色 */
+            color: white;
+            font-weight: 700;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        .btn-upload-primary:hover {
+            background-color: #6CBEDD;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        /* 检测控制按钮分组美化 */
+        .control-buttons {
+            display: flex; /* 使用 Flexbox 布局 */
+            justify-content: space-between; /* 元素间距平均分布 */
+            align-items: center;
+            margin-top: 20px;
+        }
+        .control-buttons .btn {
+            flex-grow: 1; /* 按钮占据等宽空间 */
+            margin: 5px;
+            padding: 12px 10px;
+            font-size: 16px;
+        }
+        /* 特殊按钮的宽度调整 */
+        .btn-detect {
+            background-color: #2ECC71 !important; /* 绿色 */
+            color: white !important;
+            font-weight: 700 !important;
+        }
+        .btn-detect:hover {
+            background-color: #27AE60 !important;
+        }
+        .btn-stop-reset {
+            background-color: #E74C3C !important; /* 红色 */
+            color: white !important;
+        }
+        .btn-stop-reset:hover {
+            background-color: #C0392B !important;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html"><i class="fa fa-paw"></i> 毛宝守护者</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="index.html"><i class="fa fa-home"></i> 首页</a></li>
+                <li><a href="image-detect.html"><i class="fa fa-image"></i> 图片检测</a></li>
+                <li class="active"><a href="video-detect.html"><i class="fa fa-video-camera"></i> 视频检测</a></li>
+                <li><a href="about.html"><i class="fa fa-info-circle"></i> 系统介绍</a></li>
+                <li><a href="#" id="authButton"><i class="fa fa-user-circle"></i> 登录</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page-title">
+        <h1><i class="fa fa-video-camera"></i> 实时宠物视频行为检测</h1>
+        <p class="subtitle">上传宠物视频或输入URL，系统逐帧分析宠物行为，并提供智能预警，让您的毛孩子更安全、更健康！</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card">
+                <h3><i class="fa fa-folder-open"></i> 文件操作与检测控制</h3>
+                <hr>
+
+                <p style="color: #777; margin-bottom: 20px;">请通过以下方式选择或加载视频，并开始实时行为分析。</p>
+
+                <div class="upload-group">
+                    <label for="videoUpload" class="control-label" style="font-size: 16px; color: #6C8EBF;">
+                        <i class="fa fa-upload"></i> **选择并加载本地视频**
+                    </label>
+                    <input type="file" id="videoUpload" accept="video/*" class="form-control" style="border: none; box-shadow: none;">
+                    <button class="btn btn-upload-primary btn-block" onclick="uploadVideo()">
+                        <i class="fa fa-cloud-upload"></i> 上传并加载视频
+                    </button>
+                </div>
+
+                <div class="upload-group" style="margin-top: 15px;">
+                    <label for="videoUrlInput" class="control-label" style="font-size: 16px; color: #6C8EBF;">
+                        <i class="fa fa-link"></i> **或输入视频 URL 地址**
+                    </label>
+                    <input type="text" id="videoUrlInput" class="form-control" placeholder="例如：https://example.com/pet.mp4">
+                    <button class="btn btn-success btn-block" onclick="predictVideoByUrl()">
+                        <i class="fa fa-cloud-download"></i> 加载 URL 视频
+                    </button>
+                </div>
+
+
+                <h4 style="margin-top: 40px; margin-bottom: 15px; color: #555;"><i class="fa fa-play-circle"></i> 核心检测控制</h4>
+                <div class="control-buttons">
+                    <button class="btn btn-detect" onclick="startDetection()">
+                        <i class="fa fa-search"></i> 开始检测
+                    </button>
+                    <button class="btn btn-stop-reset" onclick="stopDetection()">
+                        <i class="fa fa-stop"></i> 停止 & 重置
+                    </button>
+                </div>
+
+                <div class="status-bar" id="detectionStatus">
+                    准备就绪，请上传视频或输入视频URL~
+                </div>
+
+                <div class="settings-group">
+                    <h4>🔔 异常预警阈值设置</h4>
+                    <p>超过设定时长将触发预警提示，请合理设置，保障宠物健康。</p>
+
+                    <div class="setting-item">
+                        <label for="standingThreshold">持续站立预警（分钟）</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="number" id="standingThreshold" class="form-control" value="10" min="1" max="60" style="width: 90px; margin-right: 10px;">
+                            <span>分钟</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="eatingThreshold">未进食时长预警（小时）</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="number" id="eatingThreshold" class="form-control" value="8" min="1" max="30" style="width: 90px; margin-right: 10px;">
+                            <span>小时</span>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <label for="playingThreshold">无玩耍时长预警（小时）</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="number" id="playingThreshold" class="form-control" value="2" min="1" max="45" style="width: 90px; margin-right: 10px;">
+                            <span>小时</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <label for="fightingThreshold">打斗持续预警（秒）</label>
+                        <div style="display: flex; align-items: center;">
+                            <input type="number" id="fightingThreshold" class="form-control" value="5" min="1" max="60" style="width: 90px; margin-right: 10px;">
+                            <span>秒</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card result-area">
+                <h3><i class="fa fa-eye"></i> 实时检测视图与分析</h3>
+                <hr>
+
+                <div class="video-container" id="videoContainer">
+                    <div class="video-placeholder" id="videoPlaceholder">
+                        <i class="fa fa-video-camera"></i>
+                        <p>视频预览区域</p>
+                        <p>请上传视频或加载URL后，点击“开始检测”</p>
+                    </div>
+                    <canvas id="resultCanvas" style="display: none;"></canvas>
+                    <video id="videoElement" style="display: none;" controls></video>
+                </div>
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#behavior"><i class="fa fa-lightbulb-o"></i> 行为分析与建议</a></li>
+                    <li><a data-toggle="tab" href="#timers"><i class="fa fa-clock-o"></i> 时长记录</a></li>
+                    <li><a data-toggle="tab" href="#rawdata"><i class="fa fa-code"></i> 原始检测数据</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div id="behavior" class="tab-pane fade in active">
+                        <div class="analysis-result" id="analysisContent">
+                            <p style="color:#7f8c8d;">请上传视频并点击"开始检测"，系统将实时分析宠物的行为状态，并提供专业的行为解读和干预建议。</p>
+                        </div>
+                    </div>
+                    <div id="timers" class="tab-pane fade">
+                        <div class="analysis-result">
+                            <h4 style="margin-top: 0; margin-bottom: 20px; color: #6C8EBF;">当前行为持续时长</h4>
+                            <div class="timer-display">
+                                <div class="timer-card">
+                                    <h5>持续站立</h5>
+                                    <p id="standingTime">00:00</p>
+                                </div>
+                                <div class="timer-card">
+                                    <h5>持续进食</h5>
+                                    <p id="eatingTime">00:00</p>
+                                </div>
+                                <div class="timer-card">
+                                    <h5>持续休息</h5>
+                                    <p id="restingTime">00:00</p>
+                                </div>
+                                <div class="timer-card">
+                                    <h5>持续玩耍</h5>
+                                    <p id="playingTime">00:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="rawdata" class="tab-pane fade">
+                        <div class="analysis-result">
+                            <pre id="result">原始检测数据将在检测开始后显示，包括时间戳、行为类型和置信度等信息</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer style="background-color: #6C8EBF; color: #E0F2F7; padding: 30px 0; margin-top: 80px;">
+    <div class="container text-center">
+        <p><i class="fa fa-copyright"></i> 2025 毛宝守护者 - 基于YOLOv11的智能宠物看护系统</p>
+    </div>
+</footer>
+
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+    // -----------------------------------------------------------------------
+    // 以下是功能性代码 (JavaScript)
+    // -----------------------------------------------------------------------
+
+    // --- 全局变量和初始化 ---
+    let videoElement = document.getElementById('videoElement');
+    let resultCanvas = document.getElementById('resultCanvas');
+    let ctx = resultCanvas.getContext('2d');
+    let isDetecting = false;
+    let detectionInterval;
+    let timerInterval; // 用于更新 UI 时长显示
+
+    // 行为计时器：duration (毫秒), lastCheck (上次更新时间戳), isWarning (是否预警)
+    let behaviorTimers = {
+        standing: { duration: 0, lastCheck: 0, isWarning: false },
+        eating: { duration: 0, lastCheck: 0, isWarning: false, lastEatTime: null, eatingThreshold: 8 * 3600 * 1000 },
+        resting: { duration: 0, lastCheck: 0, isWarning: false },
+        playing: { duration: 0, lastCheck: 0, isWarning: false, lastPlayTime: null, playingThreshold: 2 * 3600 * 1000 },
+        fighting: { duration: 0, lastCheck: 0, isWarning: false }
+    };
+
+    // 行为漏检计数：用于防抖处理
+    let behaviorMissCount = {
+        standing: 0,
+        eating: 0,
+        resting: 0,
+        playing: 0,
+        fighting: 0
+    };
+
+    // --- 辅助函数 ---
+
+    // 更新状态栏
+    function updateStatus(message) {
+        document.getElementById('detectionStatus').innerHTML = `<i class="fa fa-info-circle"></i> ${message}`;
+    }
+
+    // 更新计时器 UI 显示
+    function updateTimerDisplay() {
+        // 站立、进食、休息、玩耍显示持续时间（精确到秒）
+        const displayBehaviors = ['standing', 'eating', 'resting', 'playing'];
+        displayBehaviors.forEach(behavior => {
+            const seconds = Math.floor(behaviorTimers[behavior].duration / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            document.getElementById(`${behavior}Time`).textContent =
+                `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        });
+    }
+
+    // 重置所有计时器和状态
+    function resetAllTimers() {
+        if (timerInterval) clearInterval(timerInterval);
+
+        Object.keys(behaviorTimers).forEach(key => {
+            behaviorTimers[key].duration = 0;
+            behaviorTimers[key].lastCheck = 0;
+            behaviorTimers[key].isWarning = false;
+        });
+
+        // 重置漏检计数
+        Object.keys(behaviorMissCount).forEach(key => {
+            behaviorMissCount[key] = 0;
+        });
+
+        behaviorTimers.eating.lastEatTime = null;
+        behaviorTimers.playing.lastPlayTime = null;
+
+        updateTimerDisplay();
+        document.getElementById('analysisContent').innerHTML = '<p style="color:#7f8c8d;">计时器已重置，等待开始新的检测</p>';
+        document.getElementById('result').innerHTML = '<pre style="white-space: pre-wrap; word-wrap: break-word; background: #F8F8F8; border: 1px solid #E0E0E0; padding: 15px; border-radius: 8px; max-height: 300px; overflow-y: auto; font-size: 14px; color: #444;">原始检测数据已清除。</pre>';
+
+        // 重新启动 UI 计时器
+        timerInterval = setInterval(updateTimerDisplay, 300);
+    }
+
+    // 累计行为时长，并检查预警
+    function accumulateBehaviorDuration(behavior, isDetected) {
+        const now = Date.now();
+        const timer = behaviorTimers[behavior];
+
+        // 初始化lastCheck
+        if (timer.lastCheck === 0) {
+            timer.lastCheck = now;
+            if (isDetected) {
+                timer.duration = 0; // 首次检测到行为时初始化时长
+            }
+            return;
+        }
+
+        const timePassed = now - timer.lastCheck;
+        timer.lastCheck = now;
+
+        // 仅在检测到行为时累计时长，未检测到时保持时长（避免清零）
+        if (isDetected) {
+            timer.duration += timePassed;
+
+            // 特殊处理：进食/玩耍行为记录最后发生时间
+            if (behavior === 'eating') {
+                timer.lastEatTime = now;
+                timer.isWarning = false;
+            }
+            if (behavior === 'playing') {
+                timer.lastPlayTime = now;
+                timer.isWarning = false;
+            }
+        }
+
+        // --- 预警检查 ---
+        timer.isWarning = false;
+
+        // 1. 站立预警 (超过 X 分钟)
+        if (behavior === 'standing' && timer.duration > parseInt(document.getElementById('standingThreshold').value) * 60 * 1000) {
+            timer.isWarning = true;
+        }
+
+        // 2. 打斗预警 (超过 X 秒)
+        if (behavior === 'fighting' && timer.duration > parseInt(document.getElementById('fightingThreshold').value) * 1000) {
+            timer.isWarning = true;
+        }
+
+        // 3. 玩耍预警 (未玩耍超过 X 小时)
+        if (behavior === 'playing' && timer.lastPlayTime && (now - timer.lastPlayTime) > parseInt(document.getElementById('playingThreshold').value) * 3600 * 1000) {
+            timer.isWarning = true;
+        }
+
+        // 4. 进食预警 (未进食超过 X 小时)
+        if (behavior === 'eating' && timer.lastEatTime && (now - timer.lastEatTime) > parseInt(document.getElementById('eatingThreshold').value) * 3600 * 1000) {
+            timer.isWarning = true;
+        }
+
+        updateTimerDisplay();
+    }
+
+    // --- 导航栏登录状态逻辑 (保持不变) ---
+    $(document).ready(function() {
+        // if (localStorage.getItem('isLoggedIn') !== 'true') { window.location.href = 'login.html'; }
+
+        const authButton = $('#authButton');
+        authButton.text('注销');
+        authButton.attr('href', '#');
+        authButton.click(function(e) {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            window.location.href = 'index.html';
+        });
+
+        // 启动 UI 计时器，确保每300ms更新计时器显示
+        timerInterval = setInterval(updateTimerDisplay, 300);
+    });
+
+    // --- 视频加载和控制函数 ---
+
+    function setupVideo(url) {
+        videoElement.src = url;
+        videoElement.style.display = 'block';
+        document.getElementById('videoPlaceholder').style.display = 'none';
+        resultCanvas.style.display = 'none';
+        videoElement.load();
+        updateStatus('视频加载完成，请点击 "开始检测"');
+    }
+
+    async function uploadVideo() {
+        resetAllTimers();
+        const fileInput = document.getElementById('videoUpload');
+        const file = fileInput.files[0];
+        if (!file) {
+            alert('请先选择视频文件！');
+            updateStatus(' 准备就绪，请上传视频或输入视频URL~');
+            return;
+        }
+        const videoUrl = URL.createObjectURL(file);
+        setupVideo(videoUrl);
+    }
+
+    async function predictVideoByUrl() {
+        resetAllTimers();
+        const urlInput = document.getElementById('videoUrlInput').value.trim();
+        if (!urlInput) {
+            alert('请先输入视频URL！');
+            updateStatus(' 准备就绪，请上传视频或输入视频URL~');
+            return;
+        }
+        setupVideo(urlInput);
+    }
+
+    // 播放/暂停按钮已移除，用户通过视频自带控件控制。这里保留空函数避免报错。
+    function playVideo() {
+        if (!videoElement.src) { alert('请先上传视频或输入视频URL！'); return; }
+        if(!isDetecting) {
+            videoElement.play();
+            videoElement.style.display = 'block';
+            resultCanvas.style.display = 'none';
+            updateStatus('视频播放中，实时记录行为时长（精确到秒）');
+        }
+    }
+
+    function pauseVideo() {
+        if (!videoElement.src) { return; }
+        if(!isDetecting) {
+            videoElement.pause();
+            updateStatus('视频已暂停，时长记录停止累计');
+        }
+    }
+
+    // --- 核心检测与分析函数 ---
+
+    function displayResult(data) {
+        let resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = '<pre style="white-space: pre-wrap; word-wrap: break-word; background: #F8F8F8; border: 1px solid #E0E0E0; padding: 15px; border-radius: 8px; max-height: 300px; overflow-y: auto; font-size: 14px; color: #444;">' + JSON.stringify(data, null, 2) + '</pre>';
+    }
+
+    function analyzeDetectionResult(data) {
+        const analysisContent = document.getElementById('analysisContent');
+        let analysisText = '';
+        const detectedClasses = data.predictions ? data.predictions.map(pred => pred.class.toLowerCase()) : [];
+
+        // 1. 分析站立（standing）行为
+        const isStanding = detectedClasses.includes('standing');
+        if (isStanding) {
+            behaviorMissCount.standing = 0; // 检测到行为，重置漏检计数
+            accumulateBehaviorDuration('standing', true);
+        } else {
+            behaviorMissCount.standing++;
+            // 连续3帧未检测到才停止累计
+            if (behaviorMissCount.standing > 3) {
+                accumulateBehaviorDuration('standing', false);
+            } else {
+                accumulateBehaviorDuration('standing', true); // 视为行为持续
+            }
+        }
+
+        if (isStanding) {
+            const standingPred = data.predictions.find(pred => pred.class.toLowerCase() === 'standing');
+            const confidence = (standingPred.confidence * 100).toFixed(1);
+            const standingSeconds = behaviorTimers.standing.duration / 1000;
+            analysisText += `
+            <div class="analysis-item ${behaviorTimers.standing.isWarning ? 'alert-highlight' : ''}">
+                <p><strong>检测到站立行为（置信度：${confidence}%，已持续：${standingSeconds.toFixed(0)}秒）</strong></p>
+                <p><strong>现实意义：</strong>站立行为在行为序列中通常是过渡动作...。若仅检测到站立行为而无延续行为，宠物可能处于不安状态。</p>
+                <p><strong>实际场景建议：</strong>若连续识别到宠物在固定位置站立超过${document.getElementById('standingThreshold').value}分钟，可通过摄像头语音安抚。</p>
+            </div>
+            `;
+        }
+
+        // 2. 分析进食（eating）行为
+        const isEating = detectedClasses.includes('eating');
+        if (isEating) {
+            behaviorMissCount.eating = 0;
+            accumulateBehaviorDuration('eating', true);
+        } else {
+            behaviorMissCount.eating++;
+            if (behaviorMissCount.eating > 3) {
+                accumulateBehaviorDuration('eating', false);
+            } else {
+                accumulateBehaviorDuration('eating', true);
+            }
+        }
+
+        if (isEating) {
+            const eatingPred = data.predictions.find(pred => pred.class.toLowerCase() === 'eating');
+            const confidence = (eatingPred.confidence * 100).toFixed(1);
+            const eatingSeconds = behaviorTimers.eating.duration / 1000;
+
+            analysisText += `
+            <div class="analysis-item">
+                <p><strong>检测到进食行为（置信度：${confidence}%，已持续：${eatingSeconds.toFixed(0)}秒）</strong></p>
+                <p><strong>现实意义：</strong>进食频率和时间是健康的重要信号...。</p>
+                <p><strong>实际场景建议：</strong>如果主人远程放入食物后，系统在设定时间内未检测到"eating"行为，将自动提醒。</p>
+            </div>
+            `;
+        } else if (behaviorTimers.eating.lastEatTime) {
+            const hoursSinceEat = (new Date() - behaviorTimers.eating.lastEatTime) / 3600000;
+            analysisText += `
+            <div class="analysis-item ${behaviorTimers.eating.isWarning ? 'alert-highlight' : ''}">
+                <p><strong>未检测到进食行为</strong></p>
+                <p><strong>当前状态：</strong>距离上次进食已${hoursSinceEat.toFixed(1)}小时 ${behaviorTimers.eating.isWarning ? '（已超时，请注意）' : ''}</p>
+                <p><strong>建议：</strong>若超过${document.getElementById('eatingThreshold').value}小时未进食，需检查宠物健康状况。</p>
+            </div>
+            `;
+        }
+
+        // 3. 分析休息（resting）行为
+        const isResting = detectedClasses.includes('resting');
+        if (isResting) {
+            behaviorMissCount.resting = 0;
+            accumulateBehaviorDuration('resting', true);
+        } else {
+            behaviorMissCount.resting++;
+            if (behaviorMissCount.resting > 3) {
+                accumulateBehaviorDuration('resting', false);
+            } else {
+                accumulateBehaviorDuration('resting', true);
+            }
+        }
+
+        if (isResting) {
+            const restingPred = data.predictions.find(pred => pred.class.toLowerCase() === 'resting');
+            const confidence = (restingPred.confidence * 100).toFixed(1);
+            const restingSeconds = behaviorTimers.resting.duration / 1000;
+            const isSleeping = restingSeconds >= 1800; // 30分钟视为酣睡
+
+            analysisText += `
+            <div class="analysis-item">
+                <p><strong>检测到${isSleeping ? '酣睡（sleeping）' : '休息（resting）'}行为（置信度：${confidence}%，已持续：${restingSeconds.toFixed(0)}秒）</strong></p>
+                <p><strong>现实意义：</strong>休息时间是评估宠物身体状况...。长时间休息可能提示身体不适。</p>
+                <p><strong>实际场景建议：</strong>如果系统连续监测到宠物长时间躺卧且未切换其他行为，将自动推送"宠物长时间未活动"提示给主人。</p>
+            </div>
+            `;
+        }
+
+        // 4. 分析玩耍（playing）行为
+        const isPlaying = detectedClasses.includes('playing');
+        if (isPlaying) {
+            behaviorMissCount.playing = 0;
+            accumulateBehaviorDuration('playing', true);
+        } else {
+            behaviorMissCount.playing++;
+            if (behaviorMissCount.playing > 3) {
+                accumulateBehaviorDuration('playing', false);
+            } else {
+                accumulateBehaviorDuration('playing', true);
+            }
+        }
+
+        if (isPlaying) {
+            const playingPred = data.predictions.find(pred => pred.class.toLowerCase() === 'playing');
+            const confidence = (playingPred.confidence * 100).toFixed(1);
+            const playingSeconds = behaviorTimers.playing.duration / 1000;
+
+            analysisText += `
+            <div class="analysis-item">
+                <p><strong>检测到玩耍行为（置信度：${confidence}%，已持续：${playingSeconds.toFixed(0)}秒）</strong></p>
+                <p><strong>现实意义：</strong>玩耍是宠物释放精力、保持身心健康的重要方式...。</p>
+                <p><strong>实际场景建议：</strong>系统记录无"playing"行为时长，可能提示宠物缺乏互动，系统将建议主人增加陪伴。</p>
+            </div>
+            `;
+        } else if (behaviorTimers.playing.lastPlayTime) {
+            const hoursSincePlay = (new Date() - behaviorTimers.playing.lastPlayTime) / 3600000;
+            analysisText += `
+            <div class="analysis-item ${behaviorTimers.playing.isWarning ? 'alert-highlight' : ''}">
+                <p><strong>未检测到玩耍行为</strong></p>
+                <p><strong>当前状态：</strong>距离上次玩耍已${hoursSincePlay.toFixed(1)}小时 ${behaviorTimers.playing.isWarning ? '（已超时，请注意）' : ''}</p>
+                <p><strong>建议：</strong>若超过${document.getElementById('playingThreshold').value}小时无玩耍，可通过远程语音或自动逗宠设备增加互动，避免宠物抑郁。</p>
+            </div>
+            `;
+        }
+
+        // 5. 分析打斗（fighting）行为
+        const isFighting = detectedClasses.includes('fighting');
+        if (isFighting) {
+            behaviorMissCount.fighting = 0;
+            accumulateBehaviorDuration('fighting', true);
+        } else {
+            behaviorMissCount.fighting++;
+            if (behaviorMissCount.fighting > 3) {
+                accumulateBehaviorDuration('fighting', false);
+            } else {
+                accumulateBehaviorDuration('fighting', true);
+            }
+        }
+
+        if (isFighting) {
+            const fightingPred = data.predictions.find(pred => pred.class.toLowerCase() === 'fighting');
+            const confidence = (fightingPred.confidence * 100).toFixed(1);
+            const fightingSeconds = behaviorTimers.fighting.duration / 1000;
+
+            analysisText += `
+            <div class="analysis-item ${behaviorTimers.fighting.isWarning ? 'alert-highlight' : ''}">
+                <p><strong>Warning：检测到打斗行为（置信度：${confidence}%，已持续：${fightingSeconds.toFixed(1)}秒）${behaviorTimers.fighting.isWarning ? ' - ⚠️ 立即预警！' : ''}</strong></p>
+                <p><strong>现实意义：</strong>在多宠物家庭中，打斗行为是一种常见但危险的突发行为...。</p>
+                <p><strong>实际场景建议：</strong>系统检测到超过${document.getElementById('fightingThreshold').value}秒的打斗动作，将立即触发报警机制并推送截图。</p>
+            </div>
+            `;
+        }
+
+        if (analysisText === '') {
+            analysisText = `<p style="color:#7f8c8d;">当前检测结果中未包含系统支持分析的行为（站立、进食、休息、玩耍、打斗），暂无法提供针对性分析。</p>`;
+        }
+
+        analysisContent.innerHTML = analysisText;
+        displayResult(data);
+    }
+
+
+    async function startDetection() {
+        if (isDetecting) return;
+
+        if (!videoElement.src) {
+            alert('请先选择视频！');
+            return;
+        }
+
+        stopDetection();
+        isDetecting = true;
+
+        // 隐藏 video 元素，显示 canvas
+        videoElement.style.display = 'none';
+        resultCanvas.style.display = 'block';
+        document.getElementById('videoPlaceholder').style.display = 'none';
+
+        videoElement.pause();
+        videoElement.currentTime = 0;
+
+        videoElement.onloadedmetadata = () => {
+            resultCanvas.width = videoElement.videoWidth || 640;
+            resultCanvas.height = videoElement.videoHeight || 480;
+        };
+
+        if (videoElement.videoWidth) {
+            resultCanvas.width = videoElement.videoWidth;
+            resultCanvas.height = videoElement.videoHeight;
+        }
+
+        videoElement.play();
+
+        updateStatus('正在进行视频检测... (每0.3秒处理一帧)');
+
+        // 同步UI计时器与检测频率
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(updateTimerDisplay, 300);
+
+        detectionInterval = setInterval(async () => {
+            if (videoElement.paused || videoElement.ended) {
+                stopDetection();
+                updateStatus('视频播放结束或已暂停，检测已停止。');
+                return;
+            }
+
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = videoElement.videoWidth;
+            tempCanvas.height = videoElement.videoHeight;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.drawImage(videoElement, 0, 0, tempCanvas.width, tempCanvas.height);
+
+            tempCanvas.toBlob(async (blob) => {
+                const fd = new FormData();
+                fd.append('file', blob, 'frame.jpg');
+
+                try {
+                    //api
+                    const res = await fetch('https://detect.roboflow.com/kk-tr6lg/1?api_key=hghCpA15OYieZgE8Uzg1', {
+                        method: 'POST',
+                        body: fd
+                    });
+
+                    const data = await res.json();
+
+                    // 在 Canvas 上绘制视频帧
+                    ctx.drawImage(videoElement, 0, 0, resultCanvas.width, resultCanvas.height);
+
+                    if (data.predictions && data.predictions.length > 0) {
+                        ctx.lineWidth = 3; // 增加边框宽度
+                        ctx.font = "18px 'Noto Sans SC', sans-serif"; // 调整字体
+
+                        // 绘制检测框
+                        data.predictions.forEach(p => {
+                            const x = p.x - p.width / 2;
+                            const y = p.y - p.height / 2;
+
+                            ctx.strokeStyle = "#FFB74D"; // 边框颜色 (暖橙色)
+                            ctx.strokeRect(x, y, p.width, p.height);
+
+                            const text = `${p.class} (${(p.confidence * 100).toFixed(1)}%)`;
+                            const textMetrics = ctx.measureText(text);
+
+                            // 绘制标签背景
+                            ctx.fillStyle = "rgba(255, 183, 77, 0.9)"; // 标签背景色 (暖橙色半透明)
+                            ctx.fillRect(x, y > 25 ? y - 30 : y, textMetrics.width + 15, 28);
+
+                            // 绘制标签文字
+                            ctx.fillStyle = "#333333";
+                            ctx.fillText(text, x + 8, y > 25 ? y - 10 : y + 20);
+                        });
+
+                        analyzeDetectionResult(data);
+                        updateStatus(`检测中：发现 ${data.predictions.length} 个行为`);
+                    } else {
+                        // 未检测到目标，仅绘制视频帧
+                        analyzeDetectionResult({ predictions: [] });
+                        updateStatus('检测中：未发现可识别的行为');
+                    }
+                } catch (error) {
+                    console.error('检测出错:', error);
+                    updateStatus(`检测出错：请检查API Key或网络连接 (${error.message})`);
+                    stopDetection();
+                }
+            }, 'image/jpeg');
+
+            // 手动调整视频时间，达到“逐帧”效果，避免依赖视频的自然播放速度
+            videoElement.currentTime += 0.3;
+
+        }, 300); // 每 300 毫秒 (0.3秒) 捕获并处理一帧
+    }
+
+    function stopDetection() {
+        if (detectionInterval) {
+            clearInterval(detectionInterval);
+        }
+
+        // 停止UI计时器
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+
+        isDetecting = false;
+        videoElement.pause();
+
+        // 停止检测时同时调用重置计时器和状态
+        resetAllTimers();
+
+        updateStatus('检测已停止，时长记录已重置');
+
+        // 停止检测后，重新显示 video 元素，隐藏 canvas
+        videoElement.style.display = 'block';
+        resultCanvas.style.display = 'none';
+    }
+</script>
+</body>
+</html>
