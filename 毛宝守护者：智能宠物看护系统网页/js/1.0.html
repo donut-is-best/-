@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宠物检测系统</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+<!-- 上传模块 -->
+<div class="container text-center" style="margin-top: 40px;">
+    <h3>上传宠物图片文件或输入图片URL进行检测</h3>
+    <input type="file" id="imageUpload" accept="image/*">
+    <button class="btn btn-primary" style="margin-left: 10px;" onclick="uploadFilePredict()">文件上传并预测</button>
+    <br><br>
+    <input type="text" id="imageUrlInput" placeholder="输入图片URL" style="width: 60%;">
+    <button class="btn btn-success" style="margin-left: 10px;" onclick="predictByUrl()">URL预测</button>
+    <div id="result" style="margin-top: 20px; word-break: break-all;"></div>
+    <!-- 在文件上传/URL区域下方加一个画布 -->
+    <div id="canvasContainer" style="margin-top: 20px;">
+        <canvas id="resultCanvas" style="max-width: 100%; border: 1px solid #ccc;"></canvas>
+    </div>
+</div>
+
+<!-- Side Menu -->
+<a id="menu-toggle" href="#" class="btn btn-primary btn-lg toggle"><i class="fa fa-bars"></i></a>
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li>
+            <a id="menu-close" href="#" class="btn btn-default btn-lg pull-right toggle">
+                <i class="fa fa-times"></i>
+            </a>
+        </li>
+        <li class="sidebar-brand">
+            <a href="index.html">Traveller's</a>
+            <hr>
+        </li>
+        <li>
+            <a href="#top">Home</a>
+        </li>
+        <li>
+            <a href="#about">About</a>
+        </li>
+        <li>
+            <a href="#services">Services</a>
+        </li>
+        <li>
+            <a href="#places">Places</a>
+        </li>
+        <li>
+            <a href="#contact">Contact</a>
+        </li>
+    </ul>
+</div>
+<!-- /Side Menu -->
+
+<!-- Full Page Image Header Area -->
+<div id="top" class="header">
+    <div class="vert-text parallax">
+        <h1 class="header-text">Research on Pet Care System</h1>
+        <h3 class="header-text">
+            <em class="header-text">So we are here to guide you</em>
+        </h3><br />
+        <a href="#about" class="btn header-btn">Find Out More</a>
+        <br/>
+        <a href="#about"><img src="img/direction.png" class="space" alt="Direction"></a>
+    </div>
+</div>
+<!-- /Full Page Image Header Area -->
+
+<!-- Intro -->
+<div id="about">
+    <div class="light-wrapper">
+        <div class="container inner">
+            <div class="row">
+                <div class="text-center">
+                    <h2 class="main-title">About our work</h2>
+                    <hr>
+                </div>
+                <div class="divide50"></div>
+                <div class="col-sm-4">
+                    <figure><img src="img/office.jpg" alt="" style="width: 100%;"></figure>
+                </div>
+                <div class="col-sm-8">
+                    <h4>Our Working Introduction</h4>
+                    <p>本项目聚焦于动物健康及行为监测，综合运用深度学习前沿技术，成功构建了一系列创新监测系统。基于YOLOv11的动物健康检测系统，借助其强大的目标检测能力，实现对动物健康状况的精准评估；基于机器视觉的宠物狗远程监护系统，为宠物主人提供便捷的远程监护服务，能够识别五种宠物状态的模型。能够实时监测宠物的运动，休息，进食，打斗，和自然站立等行为。并对不良行为和健康状态进行反馈。。</p>
+                </div>
+            </div>
+            <div class="divide50"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h4>Our Mertrics</h4><hr>
+                    <p>基于 YOLOv11 架构，在处理图像或视频流时，能够快速给出检测结果，我们到达86.6%的精度，50%的mAp，60%的召回率,能够做到精准，快速，误检率低</p>
+                    <div class="divide5"></div>
+                    <ul class="progress-list">
+                        <li>
+                            <p>Precision <em>86.6%</em></p>
+                            <div class="progress plain">
+                                <div class="bar" style="width: 86%;"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <p>mAp<em>51.7%</em></p>
+                            <div class="progress plain">
+                                <div class="bar" style="width: 51%;"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Recall <em>62.2%</em></p>
+                            <div class="progress plain">
+                                <div class="bar" style="width: 62%;"></div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- /.progress-list -->
+                </div>
+                <!-- /.col -->
+
+                <div class="col-sm-4">
+                    <h4>Why Choose Us?</h4><hr>
+                    <p>科学合理的系统检测流程，利用训练好的YOLO模型，判断图像中是否存在宠物并对状态进行实时检测。具有视频实时浏览、语音播放控制、宠物狗行为实时存储、互动界面设计等多个功能模块 </p>
+                    <div class="divide10"></div>
+                    <ol class="color">
+                        <li>快速，良好的宠物检测性能.</li>
+                        <li>帮助主人记录宠物睡眠，运动等时长，远程记录宠物健康.</li>
+                        <li>检测，预警，帮助宠物远离危险物品。</li>
+                        <li>满足宠物主人远程监护宠物的多样化需求，实现主人与宠物之间的远程互动。</li>
+                        <li>高稳定性和可靠性的系统。</li>
+                        <li>不断完善，个性化支持私人化定制你和宠物的时光。</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+
+                <div class="col-sm-4">
+                    <h4>Our Contact Information</h4><hr>
+                    <div class="divide10"></div>
+                    <div class="services-2">
+                        <div class="icon"> <img src="img/icon-web.png" data-src="style/images/icons/icon-web.png" data-ret="style/images/icons/icon-web@2x.png" class="retina" alt="" /> </div>
+                        <!-- /.icon -->
+                        <div class="text">
+                            <h5>联系方式</h5>
+                            <p>电子邮件等联系方式</p>
+                        </div>
+                        <!-- /.text -->
+                        <div class="divide20"></div>
+                        <div class="icon"> <img src="img/icon-heart.png" data-src="style/images/icons/icon-heart.png" data-ret="style/images/icons/icon-heart@2x.png" class="retina" alt="" /> </div>
+                        <!-- /.icon -->
+                        <div class="text">
+                            <h5>支持感谢</h5>
+                            <p>免费向我们寻求帮助和支持</p>
+                        </div>
+                        <!-- /.text -->
+                        <div class="divide20"></div>
+                        <div class="icon"> <img src="img/icon-print.png" data-src="style/images/icons/icon-print.png" data-ret="style/images/icons/icon-print@2x.png" class="retina" alt="" /> </div>
+                        <!-- /.icon -->
+                        <div class="text">
+                            <h5>意见投递</h5>
+                            <p>本平台支持解决使用过程中的问题.</p>
+                        </div>
+                        <!-- /.text -->
+
+                    </div>
+                    <!-- /.services-2 -->
+
+                </div>
+                <!-- /.col -->
+
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.light-wrapper -->
+</div>
+<!-- /Intro -->
+
+<!-- Services -->
+<div id="services" class="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center">
+                <h2 class="main-title">Our Services</h2>
+                <hr>
+            </div>
+        </div>
+        <div class="divide50"></div>
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <div class="service-item">
+                    <i class="service-icon fa fa-plane"></i>
+                    <h4 class="service-title">远程看护</h4>
+                    <p class="service-desc">帮助您和您的宠物远程记录，为动物行为识别与远程监测提供坚实的技术支撑。实现了宠物主人与宠物之间的远程互动，满足了宠物主人对宠物全方位监护的需求。</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="service-item">
+                    <i class="service-icon fa fa-usd"></i>
+                    <h4 class="service-title">免费试用</h4>
+                    <p class="service-desc">一定额度的免费对宠物的习惯和行为记录分析。为宠物的主人提供高效、便捷的远程行为分析与异常提醒服务。</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="service-item">
+                    <i class="service-icon fa fa-cutlery"></i>
+                    <h4 class="service-title">进食保护</h4>
+                    <p class="service-desc">能够实现对动物进食常见有害物质的识别和预警，防止误食有害物质，记录宠物饮食规律。实现远程看护的智能化，真正保障了宠物健康。</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="service-item">
+                    <i class="service-icon fa fa-camera"></i>
+                    <h4 class="service-title">监护方式</h4>
+                    <p class="service-desc">实时监测宠物的行为状态，支持图片、视频及摄像头多种检测方式。涵盖户登录注册、视频实时浏览、语音播放控制、宠物狗行为实时存储、互动界面设计等多个功能模块。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Services -->
+
+<!-- Callout -->
+<div class="callout">
+    <div class="vert-text">
+        <h1 class="main-title parallax2">Your using Guide</h1>
+    </div>
+</div>
+<!-- /Callout -->
+
+<!-- Portfolio -->
+<div id="places" class="places">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center">
+                <h2 class="main-title">effect diagram</h2>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <div class="divide50"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="grid center-block">
+                    <figure class="effect-zoe">
+                        <img src="img/paris.jpg" alt="paris" class="img-responsive center-block">
+                        <figcaption>
+                            <h2>PLAYING</h2>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                            <p class="description">
+                                远程连接到硬件设施，提供远程陪玩。实现主人与宠物之间的有效互动。
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="grid center-block">
+                    <figure class="effect-zoe">
+                        <img src="img/sydney.jpg" alt="sydney" class="img-responsive center-block">
+                        <figcaption>
+                            <h2>多宠物看护</h2>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                            <p class="description">
+                                分辨不同宠物之间的行为，远程对打斗等危险行为发出预警，提醒用户，维护安全。
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+        <div class= "row">
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="grid center-block">
+                    <figure class="effect-zoe">
+                        <img src="img/washington.jpg" alt="washington" class="img-responsive center-block">
+                        <figcaption>
+                            <h2>平和状态分析</h2>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                            <p class="description">
+                                通过宠物日常状态和作息规律，分析心情和皮肤状态。实现了动物健康管理的个性化和精准化。
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="grid center-block">
+                    <figure class="effect-zoe">
+                        <img src="img/london.jpg" alt="london" class="img-responsive center-block">
+                        <figcaption>
+                            <h2>休息记录</h2>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                            <p class="description">
+                                对宠物休息和玩耍进行分析，记录睡眠时长，形成个性化数据，预防生病行为。
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="grid center-block">
+                    <figure class="effect-zoe">
+                        <img src="img/statue_of_liberty.jpg" alt="statue_of_liberty" class="img-responsive center-block">
+                        <figcaption>
+                            <h2>U.S.A</h2>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                            <p class="description">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in lobortis nisl, vitae iaculis sapien.
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="grid center-block">
+                    <figure class="effect-zoe">
+                        <img src="img/pizza_tower.jpg" alt="pizza_tower" class="img-responsive center-block">
+                        <figcaption>
+                            <h2>Pizza Tower</h2>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                            <p class="description">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in lobortis nisl, vitae iaculis sapien.
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /Portfolio -->
+
+<!-- Call to Action -->
+<div class="call-to-action">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <h3>We provide online booking</h3>
+                <a href="#" class="btn booking-btn text-center" data-toggle="modal" data-target="#booking">Click for Booking !</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Call to Action -->
+
+<!-- Contact Section -->
+<div id="contact" class="container parallax">
+    <div class="col-md-4 col-md-offset-4 text-center">
+        <h2 class="main-title">Contact us</h2>
+        <hr>
+        <div class="divide50"></div>
+    </div>
+    <!-- Contact Inner -->
+    <div class="inner contact">
+        <!-- Form Area -->
+        <div class="contact-form">
+            <!-- Form -->
+            <form id="contact-us" method="post" action="#">
+                <!-- Left Inputs -->
+                <div class="col-xs-6 col-xs-12 animated" data-animation="fadeInLeft" data-animation-delay="300">
+                    <!-- Name -->
+                    <input type="text" name="name" id="name" required="required" class="form" placeholder="Name" />
+                    <!-- Email -->
+                    <input type="email" name="mail" id="mail" required="required" class="form" placeholder="Email" />
+                    <!-- Subject -->
+                    <input type="text" name="subject" id="subject" required="required" class="form" placeholder="Subject" />
+                </div><!-- End Left Inputs -->
+                <!-- Right Inputs -->
+                <div class="col-xs-6 col-xs-12 animated" data-animation="fadeInRight" data-animation-delay="400">
+                    <!-- Message -->
+                    <textarea name="message" id="message" class="form textarea"  placeholder="Message"></textarea>
+                </div><!-- End Right Inputs -->
+                <!-- Bottom Submit -->
+                <div class="relative fullwidth col-xs-12">
+                    <!-- Send Button -->
+                    <button type="submit" id="submit" name="submit" class="form-btn semibold">Send Message</button>
+                </div><!-- End Bottom Submit -->
+                <!-- Clear -->
+                <div class="clear"></div>
+            </form>
+
+            <!-- Your Mail Message -->
+            <div class="mail-message-area">
+                <!-- Message -->
+                <div class="alert gray-bg mail-message not-visible-message">
+                    <strong>Thank You !</strong> Your email has been delivered.
+                </div>
+            </div>
+
+        </div><!-- End Contact Form Area -->
+    </div><!-- End Inner -->
+</div><!-- End Contact Section -->
+
+<div class="map">
+    <iframe width="100%" height="400px" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3618.727010735933!2d91.837871!3d24.907291700000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2s!4v1404919738144"></iframe>
+</div>
+<!-- /Map -->
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 text-center">
+                <ul class="list-inline">
+                    <li>
+                        <i class="fa fa-facebook"></i>
+                    </li>
+                    <li>
+                        <i class="fa fa-twitter"></i>
+                    </li>
+                    <li>
+                        <i class="fa fa-dribbble"></i>
+                    </li>
+                    <li>
+                        <i class="fa fa-pinterest"></i>
+                    </li>
+                </ul>
+                <hr>
+                <p>Copyright &copy; <a href="https://themewagon.com/">Themewagon</a>  2014</p>
+                <div class="top-scroll">
+                    <a href="#top"><i class="fa fa-arrow-circle-up scroll"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- /Footer -->
+
+<!-- begin:booking -->
+<div class="modal fade" id="booking" tabindex="-1" role="dialog" aria-labelledby="booking" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Online Booking Form</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="emailAddress">Email address</label>
+                        <input id="emailAddress" type="email" class="form-control input-lg" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input id="password" type="password" class="form-control input-lg" placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Which country do you want to travel?</label>
+                        <select class="form-control" id="country">
+                            <option>Australia</option>
+                            <option>Bangladesh</option>
+                            <option>England</option>
+                            <option>France</option>
+                            <option>U.S.A</option>
+                        </select>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn confirm-btn" value="Confirm">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end:booking -->
+
+<!-- JavaScript -->
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/jquery.parallax-1.1.3.js"></script>
+
+<!-- Predict 脚本 -->
+<script>
+    async function uploadFilePredict() {
+        const fileInput = document.getElementById('imageUpload');
+        const file = fileInput.files[0];
+        if (!file) {
+            alert('请先选择图片文件！');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const imageUrl = URL.createObjectURL(file);
+        await sendPredictionRequest('https://detect.roboflow.com/kk-tr6lg/1?api_key=hghCpA15OYieZgE8Uzg1', formData, imageUrl);
+    }
+
+    async function predictByUrl() {
+        const urlInput = document.getElementById('imageUrlInput').value.trim();
+        if (!urlInput) {
+            alert('请先输入图片URL！');
+            return;
+        }
+
+        const encodedUrl = encodeURIComponent(urlInput);
+        const apiUrl = `https://serverless.roboflow.com/kk-tr6lg/1?api_key=hghCpA15OYieZgE8Uzg1&image=${encodedUrl}`;
+
+        await sendPredictionRequest(apiUrl, null, urlInput);
+    }
+
+    async function sendPredictionRequest(apiUrl, bodyData, imageUrl) {
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                body: bodyData
+            });
+            const data = await response.json();
+            displayResult(data);
+            drawDetections(imageUrl, data);
+        } catch (error) {
+            console.error('预测出错:', error);
+            document.getElementById('result').innerHTML = '预测出错，请稍后再试。';
+        }
+    }
+
+    function displayResult(data) {
+        let resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+    }
+
+    function drawDetections(imageSrc, data) {
+        const canvas = document.getElementById('resultCanvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.onload = function () {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            if (data.predictions && data.predictions.length > 0) {
+                ctx.lineWidth = 2;
+                ctx.font = "16px Arial";
+                ctx.strokeStyle = "red";
+                ctx.fillStyle = "red";
+
+                data.predictions.forEach(pred => {
+                    const x = pred.x - pred.width / 2;
+                    const y = pred.y - pred.height / 2;
+                    ctx.strokeRect(x, y, pred.width, pred.height);
+                    ctx.fillText(`${pred.class} (${(pred.confidence * 100).toFixed(1)}%)`, x, y > 20 ? y - 5 : y + 15);
+                });
+            }
+        };
+        img.src = imageSrc;
+    }
+</script>
+</body>
+</html>

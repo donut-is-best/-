@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>“毛宝守护者”基于yolov11的智能宠物看护系统</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <style>
+        /* 全局变量：保持与登录页一致的色调 */
+        :root {
+            --primary-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            --hover-gradient: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            --accent-color: #ff758c;
+            --text-dark: #333;
+            --bg-light: #f8f9fa;
+        }
+
+        body {
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-light);
+            padding-top: 70px; /* 为固定的导航栏留出空间 */
+        }
+
+        /* 导航栏美化：白色背景 + 阴影 */
+        .navbar-custom {
+            background-color: #fff;
+            border: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-custom .navbar-brand {
+            color: var(--accent-color) !important;
+            font-weight: 700;
+            font-size: 24px;
+            height: auto;
+            padding: 15px;
+        }
+
+        .navbar-custom .nav > li > a {
+            color: #555 !important;
+            font-weight: 500;
+            padding: 15px 20px;
+            transition: color 0.3s;
+        }
+
+        .navbar-custom .nav > li > a:hover,
+        .navbar-custom .nav > li.active > a {
+            color: var(--accent-color) !important;
+            background-color: transparent !important;
+        }
+
+        /* 登录/注销按钮样式 */
+        .nav-btn-link {
+            padding-top: 8px !important;
+            padding-bottom: 8px !important;
+        }
+
+        .btn-nav {
+            border: 1px solid var(--accent-color);
+            border-radius: 20px;
+            color: var(--accent-color) !important;
+            padding: 6px 20px !important;
+            margin-top: 8px; /* 垂直居中微调 */
+            transition: all 0.3s;
+        }
+
+        .btn-nav:hover {
+            background: var(--accent-color);
+            color: white !important;
+        }
+
+        /* 封面区域 Hero Section */
+        .header {
+            height: 550px;
+            /* 宠物背景图 */
+            background:  url("img/office.jpg") center/cover no-repeat;;
+            background-size: cover;
+            position: relative;
+            margin-top: -20px; /* 抵消掉部分padding，如果是全屏设计 */
+            border-radius: 0 0 30px 30px; /*底部的圆角 */
+            overflow: hidden;
+        }
+
+        /* 渐变遮罩，让文字更清楚，且色调更暖 */
+        .header-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to right, rgba(44, 62, 80, 0.7), rgba(255, 154, 158, 0.4));
+        }
+
+        .header-content {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            width: 80%;
+        }
+
+        .header-text h1 {
+            font-weight: 700;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* 首页大按钮 */
+        .header-btn {
+            margin: 20px 10px;
+            padding: 12px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+
+        .btn-primary-custom {
+            background-image: var(--primary-gradient);
+            color: white;
+        }
+        .btn-primary-custom:hover {
+            background-image: var(--hover-gradient);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .btn-outline-light {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        .btn-outline-light:hover {
+            background: white;
+            color: var(--accent-color);
+        }
+
+        /* 核心功能区 */
+        .feature-section {
+            padding: 80px 0;
+            background-color: var(--bg-light);
+        }
+
+        .main-title {
+            color: #333;
+            font-weight: 700;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            height: 320px; /* 统一高度 */
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(255, 154, 158, 0.2);
+            border-color: #ffe5e5;
+        }
+
+        .feature-icon-box {
+            width: 70px;
+            height: 70px;
+            background: #fff0f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            color: var(--accent-color);
+            font-size: 30px;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover .feature-icon-box {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .feature-card h3 { font-size: 20px; font-weight: 600; margin-bottom: 15px; }
+        .feature-card p { color: #777; font-size: 14px; line-height: 1.6; }
+
+        /* 页脚 */
+        footer {
+            background-color: #f0f0f0; /* 略深一点的灰色 */
+            color: #444;
+            padding: 50px 0; /* 增加上下边距 */
+            margin-top: 0; /* 移除顶部边距 */
+            border-top: 5px solid var(--accent-color); /* 顶部增加主题色线条 */
+        }
+
+        footer a { color: #555; transition: 0.3s; }
+        footer a:hover { color: var(--accent-color); text-decoration: underline; }
+
+        /* --- 新增：作品集/效果图区域样式优化 --- */
+
+        .places {
+            padding: 50px 0;
+            background-color: #ffffff; /* 保持与卡片背景一致 */
+        }
+
+        .main-title {
+            color: var(--accent-color); /* 标题使用主题色 */
+            font-size: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .places hr {
+            width: 80px;
+            border-top: 3px solid var(--accent-color);
+            margin: 15px auto 40px auto;
+        }
+
+        .effect-card { /* 替代 grid */
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+        }
+
+        .effect-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .effect-card img {
+            width: 100%;
+            height: 250px; /* 固定高度，确保对齐 */
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .effect-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .figcaption-custom { /* 替代 figcaption.effect-zoe */
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95); /* 半透明白色背景 */
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+            box-sizing: border-box;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .effect-card:hover .figcaption-custom {
+            transform: translateY(0);
+        }
+
+        .figcaption-custom h2 {
+            font-size: 18px;
+            color: var(--accent-color);
+            margin: 0 0 5px 0;
+        }
+
+        .figcaption-custom .description {
+            font-size: 13px;
+            color: #555;
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+        }
+
+        .figcaption-custom .icon-links {
+            display: none; /* 简化，移除不必要的图标链接 */
+        }
+
+        /* --- 响应式优化：手机端 --- */
+        @media (max-width: 767px) {
+            .navbar-custom .navbar-brand {
+                font-size: 20px;
+            }
+
+            .header {
+                height: 450px;
+            }
+
+            .header-text h1 {
+                font-size: 36px !important;
+            }
+
+            .header-text h3 {
+                font-size: 18px !important;
+            }
+
+            .header-btn {
+                width: 80%;
+                margin-bottom: 15px;
+            }
+
+            .feature-card {
+                height: auto; /* 手机端取消固定高度 */
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-custom navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar" style="background-color: #888;"></span>
+                <span class="icon-bar" style="background-color: #888;"></span>
+                <span class="icon-bar" style="background-color: #888;"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">
+                <i class="fa fa-paw"></i> 毛宝守护者
+            </a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="index.html">首页</a></li>
+                <li><a href="image-detect.html" class="detect-link" data-target="image-detect.html">图片检测</a></li>
+                <li><a href="video-detect.html" class="detect-link" data-target="video-detect.html">视频检测</a></li>
+                <li><a href="about.html">系统介绍</a></li>
+                <li><a href="login.html" id="authButton" class="btn-nav">登录</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="header">
+    <div class="header-overlay"></div>
+    <div class="header-content">
+        <h1 class="header-text" style="font-size: 48px; margin-bottom: 20px;">“毛宝守护者”基于yolov11的智能宠物看护系统</h1>
+        <h3 class="header-text" style="font-size: 24px; margin-bottom: 40px; opacity: 0.9;">
+            跟着我们一起踏上守护毛宝之旅！
+        </h3>
+        <a href="image-detect.html" class="btn btn-primary-custom header-btn detect-link" data-target="image-detect.html">
+            <i class="fa fa-camera"></i> 开始图片检测
+        </a>
+        <a href="video-detect.html" class="btn btn-outline-light header-btn detect-link" data-target="video-detect.html">
+            <i class="fa fa-video-camera"></i> 实时视频监控
+        </a>
+    </div>
+</div>
+
+<div class="feature-section">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="main-title" style="color: var(--accent-color); font-size: 30px;">全方位守护方案</h2>
+            <p style="color: #999; margin-bottom: 50px;">Cutting-edge Technology for Your Pets</p>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="feature-card text-center">
+                    <div class="feature-icon-box"><i class="fa fa-image"></i></div>
+                    <h3>智能识别</h3>
+                    <p>上传宠物萌照，系统瞬间识别站立、进食、休息等多种状态，精准度高达92%。</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-card text-center">
+                    <div class="feature-icon-box"><i class="fa fa-eye"></i></div>
+                    <h3>实时看护</h3>
+                    <p>接入监控画面，全天分析毛孩子的一举一动，不错过每一个可爱瞬间。</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-card text-center">
+                    <div class="feature-icon-box"><i class="fa fa-bell-o"></i></div>
+                    <h3>异常预警</h3>
+                    <p>发现长时间未动、进食异常等情况，系统第一时间推送消息，防患于未然。</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="feature-card text-center">
+                    <div class="feature-icon-box"><i class="fa fa-bar-chart"></i></div>
+                    <h3>健康报告</h3>
+                    <p>自动生成行为数据图表，科学分析宠物作息规律，做最懂它的主人。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="places" class="places">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 text-center">
+                    <h2 class="main-title">效果展示</h2>
+                    <hr>
+                </div>
+            </div>
+        </div>
+        <div class="divide50"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="effect-card center-block">
+                        <img src="img/paris.jpg" alt="paris" class="img-responsive center-block">
+                        <div class="figcaption-custom">
+                            <h2><i class="fa fa-futbol-o"></i> 玩耍</h2>
+                            <p class="description">
+                                远程连接到硬件设施，提供远程陪玩。实现主人与宠物之间的有效互动。
+                            </p>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="effect-card center-block">
+                        <img src="img/sydney.jpg" alt="sydney" class="img-responsive center-block">
+                        <div class="figcaption-custom">
+                            <h2><i class="fa fa-users"></i> 多宠物看护</h2>
+                            <p class="description">
+                                分辨不同宠物之间的行为，远程对打斗等危险行为发出预警，提醒用户，维护安全。
+                            </p>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class= "row">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="effect-card center-block">
+                        <img src="img/washington.jpg" alt="washington" class="img-responsive center-block">
+                        <div class="figcaption-custom">
+                            <h2><i class="fa fa-smile-o"></i> 平和状态分析</h2>
+                            <p class="description">
+                                通过宠物日常状态和作息规律，分析心情和皮肤状态。实现了动物健康管理的个性化和精准化。
+                            </p>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="effect-card center-block">
+                        <img src="img/london.jpg" alt="london" class="img-responsive center-block">
+                        <div class="figcaption-custom">
+                            <h2><i class="fa fa-moon-o"></i> 休息记录</h2>
+                            <p class="description">
+                                对宠物休息和玩耍进行分析，记录睡眠时长，形成个性化数据，预防生病行为。
+                            </p>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="effect-card center-block">
+                        <img src="img/statue_of_liberty.jpg" alt="statue_of_liberty" class="img-responsive center-block">
+                        <div class="figcaption-custom">
+                            <h2><i class="fa fa-cutlery"></i> 进食监护</h2>
+                            <p class="description">
+                                对宠物进食多少，时长进行记录，合理规划进食时间，避免摄入有毒物质，为您的宠物安全保驾护航。
+                            </p>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-xs-12">
+                    <div class="effect-card center-block">
+                        <img src="img/pizza_tower.jpg" alt="pizza_tower" class="img-responsive center-block">
+                        <div class="figcaption-custom">
+                            <h2><i class="fa fa-shield"></i> 打斗预警</h2>
+                            <p class="description">
+                                远程线上看护您的宠物，对危险打斗行为进行阻止，维护多宠物间的和谐。
+                            </p>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container text-center">
+        <p style="margin-bottom: 15px; font-weight: 600;"><i class="fa fa-heartbeat" style="color: var(--accent-color);"></i> © 2025 毛宝守护者 - 让我们来守护您的孩子！</p>
+
+        <div style="margin-bottom: 20px;">
+            <a href="#" style="font-size: 20px; margin: 0 10px;"><i class="fa fa-wechat"></i></a>
+            <a href="#" style="font-size: 20px; margin: 0 10px;"><i class="fa fa-weibo"></i></a>
+            <a href="#" style="font-size: 20px; margin: 0 10px;"><i class="fa fa-github"></i></a>
+        </div>
+
+        <ul class="list-inline">
+            <li><a href="about.html">关于系统</a></li>
+            <li>&middot;</li>
+            <li><a href="#">隐私政策</a></li>
+            <li>&middot;</li>
+            <li><a href="#">联系我们</a></li>
+        </ul>
+    </div>
+</footer>
+
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+<script>
+    $(document).ready(function() {
+        // --- 登录逻辑 ---
+
+        // 1. 检查是否登录
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const authButton = $('#authButton');
+        const detectLinks = $('.detect-link');
+
+        if (isLoggedIn) {
+            // 已登录：设置正确的链接
+            detectLinks.each(function() {
+                const targetPage = $(this).data('target');
+                $(this).attr('href', targetPage);
+            });
+
+            // 按钮变为注销
+            authButton.text('注销');
+            authButton.attr('href', '#');
+            authButton.click(function(e) {
+                e.preventDefault();
+                localStorage.removeItem('isLoggedIn');
+                window.location.href = 'login.html';
+            });
+        } else {
+            // 未登录：所有功能链接指向登录页
+            detectLinks.attr('href', 'login.html');
+            // 按钮为登录
+            authButton.text('登录');
+            authButton.attr('href', 'login.html');
+        }
+    });
+</script>
+</body>
+</html>

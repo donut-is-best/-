@@ -1,0 +1,3118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 毛宝守护者</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #ff9a9e;
+            --primary-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            --hover-gradient: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            --text-dark: #333;
+            --text-light: #888;
+        }
+
+        body {
+            background: #f0f2f5;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            min-height: 100vh; /* 确保最小高度 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px 0; /* 增加一点上下内边距防止贴边 */
+        }
+
+        /* 主容器：卡片式设计 */
+        .main-wrapper {
+            background: white;
+            width: 900px;
+            max-width: 90%;
+            /* 注册页表单项多，稍微增高一点，或者设为 auto */
+            min-height: 580px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            animation: fadeIn 0.8s ease;
+        }
+
+        /* 关键变化：
+           为了与登录页形成视觉对比，注册页我们将图片放在右侧，表单在左侧。
+           这是一种常见的"镜像"设计手法。
+        */
+
+        /* 表单区域 (现在在左侧) */
+        .form-side {
+            flex: 1;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            order: 1; /* 默认排序 */
+        }
+
+        /* 图片区域 (现在在右侧) */
+        .image-side {
+            flex: 1;
+            /* 换了一张更活泼的狗狗图片 */
+            background: url('https://images.unsplash.com/photo-1537151625747-768eb6cf92b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 40px;
+            color: white;
+            order: 2; /* 放在表单后面 */
+        }
+
+        /* 图片遮罩 */
+        .image-side::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%);
+        }
+
+        .image-content {
+            position: relative;
+            z-index: 2;
+            text-align: right; /* 文字靠右对齐 */
+        }
+
+        .image-content h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .image-content p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* 表单头部 */
+        .register-header {
+            margin-bottom: 30px;
+            text-align: center;
+        <img src="F:\桌面文件\智创赛\毛宝守护者：智能宠物看护系统网页\img\pet_logo.jpg">;
+        }
+
+        .register-header h2 {
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .register-header p {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* 表单控件美化 (沿用登录页) */
+        .form-group {
+            position: relative;
+            margin-bottom: 20px; /* 注册项多，间距稍微调小一点点 */
+        }
+
+        .form-group label { display: none; }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #bbb;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .form-control {
+            height: 50px;
+            padding-left: 45px;
+            border-radius: 30px;
+            border: 1px solid #eee;
+            background-color: #f9f9f9;
+            box-shadow: none;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            background-color: #fff;
+            border-color: #ff9a9e;
+            box-shadow: 0 0 0 3px rgba(255, 154, 158, 0.1);
+        }
+
+        .form-control:focus + .input-icon {
+            color: #ff9a9e;
+        }
+
+        /* 按钮美化 (沿用登录页) */
+        .btn-custom {
+            background-image: var(--primary-gradient);
+            border: none;
+            height: 50px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: white;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 154, 158, 0.4);
+        }
+
+        .btn-custom:hover {
+            background-image: var(--hover-gradient);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.5);
+            color: white;
+        }
+
+        /* 禁用状态的按钮样式 */
+        .btn-custom:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 链接美化 */
+        .login-link {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .login-link a {
+            color: #ff758c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .main-wrapper {
+                flex-direction: column;
+                height: auto;
+                width: 90%;
+                margin: 20px auto;
+            }
+            /* 移动端时，把图片提到最前面显示 */
+            .image-side {
+                order: 0;
+                height: 150px;
+                padding: 20px;
+            }
+            .image-content { text-align: left; }
+            .image-content h3 { font-size: 20px; }
+
+            .form-side {
+                order: 1;
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <div class="form-side">
+        <div class="register-header">
+            <img src="img/pet_logo.jpg" style="width: 80px; height: 80px; border-radius:50%; margin-bottom:15px;">
+            <h2>加入毛宝守护者</h2>
+            <p>创建一个新账户，开始守护旅程。</p>
+        </div>
+
+        <form role="form">
+            <div class="form-group">
+                <i class="fa fa-envelope input-icon"></i>
+                <input id="regEmail" type="email" class="form-control" placeholder="请输入邮箱地址" required>
+            </div>
+            <div class="form-group">
+                <i class="fa fa-lock input-icon"></i>
+                <input id="regPassword" type="password" class="form-control" placeholder="设置密码 (至少6位)" required>
+            </div>
+            <div class="form-group">
+                <i class="fa fa-check-circle input-icon" style="font-size: 16px;"></i>
+                <input id="regPasswordConfirm" type="password" class="form-control" placeholder="请再次输入密码以确认" required>
+            </div>
+
+            <button id="btn-register" type="button" class="btn btn-custom">立即注册</button>
+
+            <div class="login-link">
+                已有账号？ <a href="login.html">返回登录</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="image-side">
+        <div class="image-content">
+            <h3>欢迎加入大家庭</h3>
+            <p>我们一起为毛孩子创造更美好的世界。</p>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>lue;
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>rdConfirm').value;
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+<script src="js/jquery-1.10.2.js"></script>
+<script src="js/bootstrap.js"></script>
+
+<script type="module">
+    // 1. 引入我们在 js/firebase-config.js 里配置好的工具
+    // 注意：确保你的 firebase-config.js 文件已经按照上一步教程建好了
+    import { auth, createUserWithEmailAndPassword } from './js/firebase-config.js';
+
+    // 2. 监听“注册”按钮的点击
+    document.getElementById('btn-register').addEventListener('click', async () => {
+        
+        // 获取输入框的值
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+        
+        // 获取按钮元素（用于改变状态）
+        const btn = document.getElementById('btn-register');
+        const originalBtnText = btn.innerText;
+
+        // --- 验证逻辑 (和你原本的一样) ---
+        if (!email || !password) {
+            alert('邮箱和密码不能为空！(＞﹏＜)');
+            return;
+        }
+        if (password.length < 6) {
+            alert('为了安全，密码长度不能少于6位哦！');
+            return;
+        }
+        if (password !== passwordConfirm) {
+            alert('两次输入的密码不一致，请检查一下。');
+            return;
+        }
+
+        // --- 开始连接数据库注册 ---
+        
+        // 1. 改变按钮状态，防止重复点击
+        btn.innerText = "注册中...";
+        btn.disabled = true;
+
+        try {
+            // 2. 发送给 Firebase 创建账号
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // 3. 注册成功
+            alert('注册成功！欢迎加入毛宝守护者！( •̀ ω •́ )y');
+            window.location.href = 'login.html'; // 跳转去登录页
+
+        } catch (error) {
+            // 4. 注册失败，处理错误
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            
+            console.error("注册出错:", errorCode, errorMessage);
+
+            // 把英文错误翻译给用户看
+            if (errorCode === 'auth/email-already-in-use') {
+                alert("注册失败：这个邮箱已经被注册过了！");
+            } else if (errorCode === 'auth/invalid-email') {
+                alert("注册失败：邮箱格式好像不对哦。");
+            } else if (errorCode === 'auth/weak-password') {
+                alert("注册失败：密码太简单了。");
+            } else {
+                alert("注册失败：" + errorMessage);
+            }
+
+            // 5. 恢复按钮状态，让用户能重试
+            btn.innerText = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+</script>
+</body>
+</html>

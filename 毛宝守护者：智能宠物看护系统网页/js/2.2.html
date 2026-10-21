@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宠物检测系统</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <style>
+        /* 视频检测相关样式 */
+        .video-detection-section {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .video-controls {
+            margin: 15px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .status-message {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+        #videoPlayer {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Side Menu -->
+<a id="menu-toggle" href="#" class="btn btn-primary btn-lg toggle"><i class="fa fa-bars"></i></a>
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li><a id="menu-close" href="#" class="btn btn-default btn-lg pull-right toggle"><i class="fa fa-times"></i></a></li>
+        <li class="sidebar-brand"><a href="index.html">Traveller's</a><hr></li>
+        <li><a href="#top">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#detection">Detection</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#places">Places</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</div>
+
+<!-- Header -->
+<div id="top" class="header">
+    <div class="vert-text parallax">
+        <h1 class="header-text">Research on Pet Care System</h1>
+        <h3 class="header-text"><em class="header-text">So we are here to guide you</em></h3><br />
+        <a href="#about" class="btn header-btn">Find Out More</a><br/>
+        <a href="#about"><img src="img/direction.png" class="space" alt="Direction"></a>
+    </div>
+</div>
+
+<!-- About Section -->
+<div id="about">
+    <div class="light-wrapper">
+        <div class="container inner">
+            <div class="text-center">
+                <h2 class="main-title">About our work</h2><hr>
+                <p>我们专注于动物健康及行为监测，利用深度学习打造创新监测系统，如基于YOLOv11的宠物健康检测与远程看护。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 上传模块 -->
+<div id="detection" class="container text-center" style="margin-top: 60px; margin-bottom: 60px;">
+    <h2 class="main-title">Pet Detection System</h2><hr>
+    <p>上传宠物图片或输入图片URL来进行检测宠物的行为</p>
+    <input type="file" id="imageUpload" accept="image/*">
+    <button class="btn btn-primary" style="margin-left: 10px;" onclick="uploadFilePredict()">文件上传并预测</button>
+    <br><br>
+    <input type="text" id="imageUrlInput" placeholder="输入图片URL" style="width: 60%;">
+    <button class="btn btn-success" style="margin-left: 10px;" onclick="predictByUrl()">URL预测</button>
+
+    <!-- 新增视频检测区域 -->
+    <div class="video-detection-section">
+        <h3>视频检测功能</h3>
+        <p>上传本地视频文件进行宠物行为检测</p>
+        <input type="file" id="videoUpload" accept="video/*">
+        <button class="btn btn-info" style="margin-left: 10px;" onclick="loadVideo()">加载视频</button>
+
+        <div class="video-controls">
+            <button class="btn btn-primary" onclick="playVideo()">播放视频</button>
+            <button class="btn btn-warning" onclick="pauseVideo()">暂停视频</button>
+            <button class="btn btn-success" onclick="startVideoDetection()">开始检测</button>
+            <button class="btn btn-danger" onclick="stopVideoDetection()">停止检测</button>
+        </div>
+
+        <video id="videoPlayer" controls style="display: none;"></video>
+        <div class="status-message" id="videoStatus">请上传视频文件以开始检测</div>
+    </div>
+
+    <div id="result" style="margin-top: 20px; word-break: break-all;"></div>
+    <div id="canvasContainer" style="margin-top: 20px;">
+        <canvas id="resultCanvas" style="max-width: 100%; border: 1px solid #ccc;"></canvas>
+    </div>
+</div>
+
+
+<!-- Intro -->
+<div id="about">
+    <div class="light-wrapper">
+        <div class="container inner">
+            <div class="row">
+                <div class="text-center">
+                    <h2 class="main-title">About our work</h2>
+                    <hr>
+                </div>
+                <div class="divide50"></div>
+                <div class="col-sm-4">
+                    <figure><img src="img/office.jpg" alt="" style="width: 100%;"></figure>
+                </div>
+                <div class="col-sm-8">
+                    <h4>Our Working Introduction</h4>
+                    <p>本项目聚焦于动物健康及行为监测，综合运用深度学习前沿技术，成功构建了一系列创新监测系统。基于YOLOv11的动物健康检测系统，借助其强大的目标检测能力，实现对动物健康状况的精准评估；基于机器视觉的宠物狗远程监护系统，为宠物主人提供便捷的远程监护服务，能够识别五种宠物状态的模型。能够实时监测宠物的运动，休息，进食，打斗，和自然站立等行为。并对不良行为和健康状态进行反馈。。</p>
+                </div>
+            </div>
+            <div class="divide50"></div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <h4>Our Mertrics</h4><hr>
+                    <p>基于 YOLOv11 架构，在处理图像或视频流时，能够快速给出检测结果，我们到达86.6%的精度，50%的mAp，60%的召回率,能够做到精准，快速，误检率低</p>
+                    <div class="divide5"></div>
+                    <ul class="progress-list">
+                        <li>
+                            <p>Precision <em>86.6%</em></p>
+                            <div class="progress plain">
+                                <div class="bar" style="width: 86.6%;"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <p>mAp<em>51.7%</em></p>
+                            <div class="progress plain">
+                                <div class="bar" style="width: 51.7%;"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Recall <em>62.2%</em></p>
+                            <div class="progress plain">
+                                <div class="bar" style="width: 62.2%;"></div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- /.progress-list -->
+                </div>
+                <!-- /.col -->
+
+                <div class="col-sm-4">
+                    <h4>Why Choose Us?</h4><hr>
+                    <p>科学合理的系统检测流程，利用训练好的YOLO模型，判断图像中是否存在宠物并对状态进行实时检测。具有视频实时浏览、语音播放控制、宠物狗行为实时存储、互动界面设计等多个功能模块 </p>
+                    <div class="divide10"></div>
+                    <ol class="color">
+                        <li>快速，良好的宠物检测性能.</li>
+                        <li>帮助主人记录宠物睡眠，运动等时长，远程记录宠物健康.</li>
+                        <li>检测，预警，帮助宠物远离危险物品。</li>
+                        <li>满足宠物主人远程监护宠物的多样化需求，实现主人与宠物之间的远程互动。</li>
+                        <li>高稳定性和可靠性的系统。</li>
+                        <li>不断完善，个性化支持私人化定制你和宠物的时光。</li>
+                    </ol>
+                </div>
+                <!-- /.col -->
+
+                <div class="col-sm-4">
+                    <h4>Our Contact Information</h4><hr>
+                    <div class="divide10"></div>
+                    <div class="services-2">
+                        <div class="icon"> <img src="img/icon-web.png" data-src="style/images/icons/icon-web.png" data-ret="style/images/icons/icon-web@2x.png" class="retina" alt="" /> </div>
+                        <!-- /.icon -->
+                        <div class="text">
+                            <h5>联系方式</h5>
+                            <p>电子邮件等联系方式</p>
+                        </div>
+                        <!-- /.text -->
+                        <div class="divide20"></div>
+                        <div class="icon"> <img src="img/icon-heart.png" data-src="style/images/icons/icon-heart.png" data-ret="style/images/icons/icon-heart@2x.png" class="retina" alt="" /> </div>
+                        <!-- /.icon -->
+                        <div class="text">
+                            <h5>支持感谢</h5>
+                            <p>免费向我们寻求帮助和支持</p>
+                        </div>
+                        <!-- /.text -->
+                        <div class="divide20"></div>
+                        <div class="icon"> <img src="img/icon-print.png" data-src="style/images/icons/icon-print.png" data-ret="style/images/icons/icon-print@2x.png" class="retina" alt="" /> </div>
+                        <!-- /.icon -->
+                        <div class="text">
+                            <h5>意见投递</h5>
+                            <p>本平台支持解决使用过程中的问题.</p>
+                        </div>
+                        <!-- /.text -->
+
+                    </div>
+                    <!-- /.services-2 -->
+
+                </div>
+                <!-- /.col -->
+
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.light-wrapper -->
+</div>
+<!-- /Intro -->
+
+<!-- Services -->
+<div id="services" class="services">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center">
+                <h2 class="main-title">Our Services</h2>
+                <hr>
+            </div>
+        </div>
+        <div class="divide50"></div>
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <div class="service-item">
+                    <i class="service-icon fa fa-plane"></i>
+                    <h4 class="service-title">远程看护</h4>
+                    <p class="service-desc">帮助您和您的宠物远程记录，为动物行为识别与远程监测提供坚实的技术支撑。实现了宠物主人与宠物之间的远程互动，满足了宠物主人对宠物全方位监护的需求。</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="service-item">
+                    <i class="service-icon fa fa-usd"></i>
+                    <h4 class="service-title">免费试用</h4>
+                    <p class="service-desc">一定额度的免费对宠物的习惯和行为记录分析。为宠物的主人提供高效、便捷的远程行为分析与异常提醒服务。</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="service-item">
+                    <i class="service-icon fa fa-cutlery"></i>
+                    <h4 class="service-title">进食保护</h4>
+                    <p class="service-desc">能够实现对动物进食常见有害物质的识别和预警，防止误食有害物质，记录宠物饮食规律。实现远程看护的智能化，真正保障了宠物健康。</p>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div class="service-item">
+                    <i class="service-icon fa fa-camera"></i>
+                    <h4 class="service-title">监护方式</h4>
+                    <p class="service-desc">实时监测宠物的行为状态，支持图片、视频及摄像头多种检测方式。涵盖户登录注册、视频实时浏览、语音播放控制、宠物狗行为实时存储、互动界面设计等多个功能模块。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /Services -->
+
+<!-- Callout -->
+<div class="callout">
+    <div class="vert-text">
+        <h1 class="main-title parallax2">Your using Guide</h1>
+    </div>
+</div>
+<!-- /Callout -->
+
+<!-- Portfolio -->
+<div id="places" class="places">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center">
+                <h2 class="main-title">effect diagram</h2>
+                <hr>
+            </div>
+        </div>
+    </div>
+    <div class="divide50"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="grid center-block">
+                    <figure class="effect-zoe">
+                        <img src="img/paris.jpg" alt="paris" class="img-responsive center-block">
+                        <figcaption>
+                            <h2>玩耍</h2>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                            <p class="description">
+                                远程连接到硬件设施，提供远程陪玩。实现主人与宠物之间的有效互动。
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="grid center-block">
+                    <figure class="effect-zoe">
+                        <img src="img/sydney.jpg" alt="sydney" class="img-responsive center-block">
+                        <figcaption>
+                            <h2>多宠物看护</h2>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                            <p class="description">
+                                分辨不同宠物之间的行为，远程对打斗等危险行为发出预警，提醒用户，维护安全。
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+        <div class= "row">
+            <div class="col-md-6 col-sm-12 col-xs-12">
+                <div class="grid center-block">
+                    <figure class="effect-zoe">
+                        <img src="img/washington.jpg" alt="washington" class="img-responsive center-block">
+                        <figcaption>
+                            <h2>平和状态分析</h2>
+                            <p class="icon-links">
+                                <a href="#"><i class="fa fa-heart-o"></i></a>
+                                <a href="#"><i class="fa fa-eye"></i></a>
+                                <a href="#"><i class="fa fa-bookmark-o"></i></a>
+                            </p>
+                            <p class="description">
+                                通过宠物日常状态和作息规律，分析心情和皮肤状态。实现了动物健康管理的个性化和精准化。
+                            </p>
+                        </figcaption>
+                    </figure>
+                </div>
